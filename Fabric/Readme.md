@@ -105,6 +105,7 @@ Url : Open app.fabric.microsoft.com
     - Views on the left side
       - report View : UI chnages
       - Table View : Data changes
+    - Charts : Card , Line , Bar
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
