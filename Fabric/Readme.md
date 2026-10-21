@@ -102,7 +102,9 @@ Url : Open app.fabric.microsoft.com
 - PBI
     - Semantic Model : PBI modeling
     - File > Table > Semantic Model > PBI Report
-    - 
+    - Views on the left side
+      - report View : UI chnages
+      - Table View : Data changes
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
