@@ -106,6 +106,11 @@ Url : Open app.fabric.microsoft.com
       - report View : UI chnages
       - Table View : Data changes
     - Charts : Card , Line , Bar
+    - steps:
+      - based on information , find right columns
+      - Select Graph
+      - Apply columns
+      - Format graph
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
