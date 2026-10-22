@@ -118,6 +118,7 @@ Url : Open app.fabric.microsoft.com
       - Formula
       - New Column = fx(table[col])
       - Google DAX formulas
+      - Similar to excel formula on cells
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
