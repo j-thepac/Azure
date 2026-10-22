@@ -105,7 +105,7 @@ Url : Open app.fabric.microsoft.com
     - Views on the left side
       - report View : UI chnages
       - Table View : Data changes
-    - Charts : Card,Line,Bar,Slicer,Kpi,Guage
+    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage
     - steps:
       - based on information , find right columns
       - Select Graph
@@ -169,7 +169,6 @@ Url : Open app.fabric.microsoft.com
 2.Home>Rt click Item> Schedule
 
 - AirFlow 
-
 
 - Data Warehouse
     - Store Structure Data for analytics 
