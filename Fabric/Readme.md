@@ -119,6 +119,10 @@ Url : Open app.fabric.microsoft.com
       - New Column = fx(table[col])
       - Google DAX formulas
       - Similar to excel formula on cells
+      - if statement , case , variables , functions
+        ```Eg order_weekend_weekday = 
+         var tmp_day = FORMAT(Orders[Order Date],"dddd")
+         return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
