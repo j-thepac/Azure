@@ -16,8 +16,6 @@
 Url : Open app.fabric.microsoft.com
 
 
-
-
 ## Fabric 
 1. There is 1 Fabric account for a Tenent
 2. Admin creates multiple workspaces for Project / Domains
@@ -115,6 +113,11 @@ Url : Open app.fabric.microsoft.com
       - Select Graph
       - Apply columns
       - Format graph
+    - Manage Relationships between tables
+    - DAX
+      - Formula
+      - New Column = fx(table[col])
+      - Google DAX formulas
 
 ### Datapipeline (Datafactory)
 - Basic Feature :
