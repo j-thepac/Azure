@@ -105,7 +105,7 @@ Url : Open app.fabric.microsoft.com
     - Views on the left side
       - report View : UI chnages
       - Table View : Data changes
-    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page
+    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Q&A chart
     - steps:
       - based on information , find right columns
       - Select Graph
