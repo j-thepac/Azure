@@ -121,7 +121,8 @@ Url : Open app.fabric.microsoft.com
         ```Eg order_weekend_weekday = 
          var tmp_day = FORMAT(Orders[Order Date],"dddd")
          return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
-      - Measure : Eg:Calculate() 
+      - Measure :  1 result
+          - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
 ### Datapipeline (Datafactory)
 - Basic Feature :
     - parameters : Set before pipeline 
