@@ -94,6 +94,10 @@ Url : Open app.fabric.microsoft.com
             - Improve perfromance
             - Profile > Workspace Settings > Onelake > Enable Cache
 - PBI
+    - PowerQuery : Dataflow Gen2 tool in PBI
+      - Before PBI
+      - Fix null , Datatypes, Column names , Dups
+      - Transform Data
     - Semantic Model : PBI modeling
     - File > Table > Semantic Model > PBI Report
     - Views on the left side
