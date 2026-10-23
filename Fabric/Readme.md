@@ -117,7 +117,7 @@ Url : Open app.fabric.microsoft.com
              return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
       - Uses Column and Measure
           - Measure :  Aggregations (show in card)
-              - Show in Card
+              - Stored at Table /Tab level
               - Use Dax
               - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
           - New Column = fx(table[col])
