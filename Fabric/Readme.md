@@ -123,6 +123,7 @@ Url : Open app.fabric.microsoft.com
          return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
       - Measure :  1 result
           - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
+      - Group :Column >Rtck > New Group
 ### Datapipeline (Datafactory)
 - Basic Feature :
     - parameters : Set before pipeline 
