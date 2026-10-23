@@ -44,7 +44,6 @@ Url : Open app.fabric.microsoft.com
 -Once resource is created 
 - open service > Security > Access Key 
 
-
 ### Issues with Data Lake 
 - multiple Data Lake Exists across Teams 
 - Data Duplication
@@ -117,13 +116,12 @@ Url : Open app.fabric.microsoft.com
     - DAX
       - Formula
       - New Column = fx(table[col])
-      - Google DAX formulas
-      - Similar to excel formula on cells
-      - if statement , case , variables , functions
+      - DAX formulas :Similar to excel formula on cells
+          - if statement , case , variables , functions
         ```Eg order_weekend_weekday = 
          var tmp_day = FORMAT(Orders[Order Date],"dddd")
          return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
-
+      - Measure : Eg:Calculate() 
 ### Datapipeline (Datafactory)
 - Basic Feature :
     - parameters : Set before pipeline 
