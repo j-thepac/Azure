@@ -11,10 +11,7 @@
 6. Login with the new user created .
 7. Select User Account profile > Free Fabric Trail > East US
 
-
-
 Url : Open app.fabric.microsoft.com
-
 
 ## Fabric 
 1. There is 1 Fabric account for a Tenent
@@ -113,17 +110,19 @@ Url : Open app.fabric.microsoft.com
       - Apply columns
       - Format graph
     - Manage Relationships between tables
-    - DAX
-      - Formula
-      - New Column = fx(table[col])
-      - DAX formulas :Similar to excel formula on cells
-          - if statement , case , variables , functions
-        ```Eg order_weekend_weekday = 
-         var tmp_day = FORMAT(Orders[Order Date],"dddd")
-         return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
-      - Measure :  1 result
-          - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
+    - DAX (Excel Formula)
+      - Examples: if statement , case , variables , functions
+            ```Eg order_weekend_weekday = 
+             var tmp_day = FORMAT(Orders[Order Date],"dddd")
+             return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
+      - Uses Column and Measure
+          - Measure :  Aggregations (show in card)
+              - Show in Card
+              - Use Dax
+              - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
+          - New Column = fx(table[col])
       - Group :Column >Rtck > New Group
+          - Show in chart (Eg: Pie) 
 ### Datapipeline (Datafactory)
 - Basic Feature :
     - parameters : Set before pipeline 
