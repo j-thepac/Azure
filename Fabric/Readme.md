@@ -101,7 +101,7 @@ Url : Open app.fabric.microsoft.com
       - Table View : Data changes
     - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Matrix
     - Filter :
-        - Fabric > View > Filter  or Table > rtck> measure
+        - Fabric > View > Filter  or Data > Select table > rtck > measure
         - types: 1 chart , 1 Page ,all pages
         - play with setting
         - To remove change to select all
