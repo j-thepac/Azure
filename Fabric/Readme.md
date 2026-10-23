@@ -99,7 +99,7 @@ Url : Open app.fabric.microsoft.com
     - Views on the left side
       - report View : UI chnages
       - Table View : Data changes
-    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Q&A chart
+    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Matrix
     - Filter : Fabric > View > Filter
         - types: 1 chart , 1 Page ,all pages
         - play with setting
