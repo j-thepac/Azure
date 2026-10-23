@@ -182,6 +182,7 @@ Url : Open app.fabric.microsoft.com
   - Before PBI
   - Fix null , Datatypes, Column names , Dups
   - Transform Data
+  - Feature : Format , Extract , Date buttons
 - Semantic Model : PBI modeling
 - File > Table > Semantic Model > PBI Report
 - Views on the left side
