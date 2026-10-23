@@ -25,7 +25,7 @@ Url : Open app.fabric.microsoft.com
 4. Workspace : Project Folder
 5. Tenant > Workspace > Experience (Data Engineering , PBI etc) > Item (Notebook)
 
-## Contents
+## Fabric Contents
 
 ### Workspace ( Project )
 - General Info
@@ -93,42 +93,7 @@ Url : Open app.fabric.microsoft.com
             - Create temporary Copy in Onelake
             - Improve perfromance
             - Profile > Workspace Settings > Onelake > Enable Cache
-- PBI
-    - PowerQuery : Dataflow Gen2 tool in PBI
-      - Before PBI
-      - Fix null , Datatypes, Column names , Dups
-      - Transform Data
-    - Semantic Model : PBI modeling
-    - File > Table > Semantic Model > PBI Report
-    - Views on the left side
-      - report View : UI chnages
-      - Table View : Data changes
-    - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Matrix
-    - Filter :
-        - Fabric > View > Filter  or Data > Select table > rtck > measure
-        - types: 1 chart , 1 Page ,all pages
-        - play with setting
-        - To remove change to select all
-    - Drill  
-    - steps:
-      - based on information , find right columns
-      - Select Graph
-      - Apply columns
-      - Format graph
-    - Manage Relationships between tables
-    - DAX (Excel Formula)
-      - Examples: if statement , case , variables , functions
-            ```Eg order_weekend_weekday = 
-             var tmp_day = FORMAT(Orders[Order Date],"dddd")
-             return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
-      - Uses Column and Measure
-          - Measure :  Aggregations (show in card)
-              - Stored at Table /Tab level
-              - Use Dax
-              - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
-          - New Column = fx(table[col])
-     - Group :Column >Rtck > New Group
-          - Show in chart (Eg: Pie) 
+
 ### Datapipeline (Datafactory)
 - Basic Feature :
     - parameters : Set before pipeline 
@@ -170,10 +135,6 @@ Url : Open app.fabric.microsoft.com
         - save 
         - once Save > Workspace > Select Dataflow > St clikc > schdeule
     - Run : Home > refresh
-
-- Triggers
-- Monitoring
-- Integration
 - Spark 
     - Start pool: Always on
     - Custom Pool: Takes time to spin up
@@ -184,8 +145,6 @@ Url : Open app.fabric.microsoft.com
 - Schedule : 
 1.Using Pipleine 
 2.Home>Rt click Item> Schedule
-
-- AirFlow 
 
 - Data Warehouse
     - Store Structure Data for analytics 
@@ -213,3 +172,44 @@ Url : Open app.fabric.microsoft.com
     - Stored Procedure (View+paramters)
     - Visual Query editor : Dataflow Gen2 UI transformations
     - Notebook > select Tsql > open warehouse
+- Triggers
+- Monitoring
+- Integration
+ - AirFlow 
+------------------------------
+## PBI
+- PowerQuery : Dataflow Gen2 tool in PBI
+  - Before PBI
+  - Fix null , Datatypes, Column names , Dups
+  - Transform Data
+- Semantic Model : PBI modeling
+- File > Table > Semantic Model > PBI Report
+- Views on the left side
+  - report View : UI chnages
+  - Table View : Data changes
+- Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Matrix
+- Filter :
+    - Fabric > View > Filter  or Data > Select table > rtck > measure
+    - types: 1 chart , 1 Page ,all pages
+    - play with setting
+    - To remove change to select all
+- Drill  
+- steps:
+  - based on information , find right columns
+  - Select Graph
+  - Apply columns
+  - Format graph
+- Manage Relationships between tables
+- DAX (Excel Formula)
+  - Examples: if statement , case , variables , functions
+        ```Eg order_weekend_weekday = 
+         var tmp_day = FORMAT(Orders[Order Date],"dddd")
+         return if ( tmp_day in  {"Saturday", "Sunday"}, "Weekend", "Weekday")```
+  - Uses Column and Measure
+      - Measure :  Aggregations (show in card)
+          - Stored at Table /Tab level
+          - Use Dax
+          - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
+      - New Column = fx(table[col])
+ - Group :Column >Rtck > New Group
+      - Show in chart (Eg: Pie) 
