@@ -172,6 +172,7 @@ Url : Open app.fabric.microsoft.com
     - Stored Procedure (View+paramters)
     - Visual Query editor : Dataflow Gen2 UI transformations
     - Notebook > select Tsql > open warehouse
+    - Lakehouse 1)File=Bronze
 - Triggers
 - Monitoring
 - Integration
@@ -217,4 +218,6 @@ Url : Open app.fabric.microsoft.com
           - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
       - New Column = fx(table[col])
  - Group :Column >Rtck > New Group
-      - Show in chart (Eg: Pie) 
+      - Show in chart (Eg: Pie)
+  - Append Query : Union
+  - Merge :Join
