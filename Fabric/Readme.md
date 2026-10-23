@@ -181,8 +181,12 @@ Url : Open app.fabric.microsoft.com
 - PowerQuery : Dataflow Gen2 tool in PBI
   - Before PBI
   - Fix null , Datatypes, Column names , Dups
-  - Transform Data
+  - String manipulation
+  - Date fix
+  - Custom Column (based on condition)
   - Feature : Format , Extract , Date buttons
+  - Create Custom Column
+  - Merge Column
 - Semantic Model : PBI modeling
 - File > Table > Semantic Model > PBI Report
 - Views on the left side
