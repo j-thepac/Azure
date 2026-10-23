@@ -101,7 +101,7 @@ Url : Open app.fabric.microsoft.com
       - Table View : Data changes
     - Charts : Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Q&A chart
     - Filter :
-        - 1 chart , 1 Page ,all pages
+        - types: 1 chart , 1 Page ,all pages
         - Top n
     - Drill  
     - steps:
@@ -121,7 +121,7 @@ Url : Open app.fabric.microsoft.com
               - Use Dax
               - Eg: Calculate(sum(T[0], Filter(T,T[c]>1000) #formula + filter
           - New Column = fx(table[col])
-      - Group :Column >Rtck > New Group
+     - Group :Column >Rtck > New Group
           - Show in chart (Eg: Pie) 
 ### Datapipeline (Datafactory)
 - Basic Feature :
