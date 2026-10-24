@@ -221,3 +221,9 @@ Url : Open app.fabric.microsoft.com
       - Show in chart (Eg: Pie)
   - Append Query : Union
   - Merge :Join
+
+## Fabric Framework
+1. Basic Framework : 
+    - New Workspace > PreDefined Workflow "Data analytics using SQl Endpoint"
+    Eg: Raw data Store > Process Data > Processed Store > Visual
+    - modify : GetData(new , Pipeline (copy)) > Raw (Lakehouse) > Process >store(Lakehouse) > Visulize
