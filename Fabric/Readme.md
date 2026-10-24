@@ -223,7 +223,12 @@ Url : Open app.fabric.microsoft.com
   - Merge :Join
 
 ## Fabric Framework
-1. Basic Framework : 
+### Pre-Req :
+1. User has Fabric access and can create a workspace
+2. use xlsx and csv in this repo 
+
+
+### Basic Framework : 
     - New Workspace > PreDefined Workflow "Data analytics using SQl Endpoint"
     Eg: Raw data Store > Process Data > Processed Store > Visual
     - modify : GetData(new , Pipeline (copy)) > Raw (Lakehouse) > Process >store(Lakehouse) > Visulize
