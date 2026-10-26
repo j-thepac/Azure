@@ -227,13 +227,6 @@ Url : Open app.fabric.microsoft.com
 - Merge :Join
 -----------------------
 ## Fabric Framework
-1. One Lakehouse = Bronze (raw) and Silver (delta Tables)
-2. Data :
-    - Sample Data in Copy Activity
-    - csv File in this repo 
-        - Use Copy Acitivity 
-        - http Format
-        - Use Raw URL from Git
 
 ### Basic Medallion Framework : 
 1. New Workspace
@@ -243,12 +236,12 @@ Url : Open app.fabric.microsoft.com
 1.  Get Data (new Task)
     - add Add Task :   "Get Data" 
     - add item: Pipeline > Copy data 
-    - source : Sample Data
+    - source : http, GlobalSuperStore.xlsx  , Binary
     - dest : Raw Lakehouse 
-    - Dest: File
-    - Dest file Path = realestate and @concat(utcNow(),'/price_size_year.csv')
+    - Dest: File ,Binary
+    - Dest Folder =  @concat('GlobalSuperStore/',utcNow()) and File= 'file.xlsx'
     - Save and run
-2. Raw stores ( Lakehouse_Bronze_Silver )
+2. Raw stores ( Lakehouse_BronzeSilver )
     - add item: Lakehouse 
     - name: bronze_silver
     - store sql as parq file and others as is.
@@ -263,9 +256,15 @@ Url : Open app.fabric.microsoft.com
         - Goto LakeHouse Table and Analyse > SQL endpoint>  check data
     - **SlvrToGld**
         - New Notebook >  TSQL script
-        - Explorer :Add Warehouse and Lakehouse
+        - Explorer : Add Lakehouse and Warehouse (make sure Warehouse is created for next step)
         - Inspect Data in Warehouse 
         - create table schema.Table  as select * from Lakehouse.schema.table
+        - Fact And Dim:
+          - DimCustomer:CustomerKey, CustomerID, CustomerName, Segment
+          - DimProduct:ProductKey, ProductID, ProductName, Category, SubCategory
+          - DimGeography:GeographyKey, City, State, Country, Region
+          - DimDate:	DateKey, FullDate, Day, Month, MonthName, Quarter, Year
+          - FactSales:	RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
 5. Processed Data Store (Warehouse_Gold)
     - add item : Warehouse
     - Create Views if needed
