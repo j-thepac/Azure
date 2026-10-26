@@ -253,22 +253,23 @@ Url : Open app.fabric.microsoft.com
     - name: bronze_silver
     - store sql as parq file and others as is.
     - structure : Parent/timestamp/Files
-3. Process Data 
-    - add item: Notebook 
-    - Attach Raw lakehouse
-    - Read from csv files /xlsx (pandas+spark)
-    - Add timestamp , hashcolum 
-    - write into delta table
-    - Goto LakeHouse Table and Analyse > SQL endpoint>  check data 
-4. Processed Data Store (Warehouse_Gold)
-    - add item : Warehouse
-    - Under 3 (Process Data)  
+3. Process Data (BzToSlvr_SlvrToGld)
+    - ** BzToSlvr **
+        - add item: Notebook (BzToSlvr)
+        - Attach Raw lakehouse
+        - Read from csv files /xlsx (pandas+spark)
+        - Add timestamp , hashcolum 
+        - write into delta table
+        - Goto LakeHouse Table and Analyse > SQL endpoint>  check data
+    - ** SlvrToGld **
         - New Notebook >  TSQL script
         - Explorer :Add Warehouse and Lakehouse
         - create table gold.Taxi  as select * from Raw.dbo.Taxi
+5. Processed Data Store (Warehouse_Gold)
+    - add item : Warehouse
     - Create Views if needed
     - Open Warehouse > New Semantic Model 
-5. Visualise:
+6. Visualise:
     1. Go to workspace
     2. Visualize > Attach > select semantic Model from Step4
     3. Open Semantic Model > Convert Viewing to Editing 
