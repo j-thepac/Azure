@@ -227,59 +227,127 @@ Url : Open app.fabric.microsoft.com
 - Merge :Join
 -----------------------
 ## Fabric Framework
+1. Workspace > Predefined TaskFlow > Medallion
+2. Perform:
+	- Keep only 1 GetData
+	- Remove Silver (Bronze can store both Data)
+	- Remove ML Task 
+3. Rename and add item: 
+	1. Ingest 	> New Item > pipeline
+	2. Bronze_Silver > New Item > LakeHouse
+	3. Clean 	> New Item > Notebook
+	4. Transform 	> New Item > Notebook
+	5. Gold 	> New Item > Warehouse
+	6. Visualize	> New Item > Semantic (add this later)
+4. Ingest : 
+	- Pipeline + CopyData
+	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
+	- dest = Lakehouse and path  GlobalSuperstore/Timestamp/file.xlsx
+	- Save and Run
+5. Clean:
+	- Notebooks pyspark
+	- Add dataitems > DataCatalog> Lakehouse
+	- Read xlsx as pandas(4 tabs) 
+	- Fix column names
+	- Add TS column
+	- Write into Lakehouse as Pyspark Delta
+6. Transform:
+	- TSQL
+	- Add dataitems > DataCatalog> Lakehouse
+	- verify Data using inspect: Select * from Lakehouse.schema.Table
+	- create schema GlobalSuperstore
+	- ```  drop table if exists GlobalSuperstore.DimCustomer;
+		create Table GlobalSuperstore.DimCustomer as
+		select row_number() over (order by CustomerID) as CustKey,*,1 as Active
+		from Lakehouse.GlobalSuperStore.Customer```
 
-### Basic Medallion Framework : 
-1. New Workspace
-2. Select PreDefined TaskFlow  "Data analytics using SQL Endpoint"
-
-#### TaskFlow
-1.  Get Data (new Task)
-    - add Add Task :   "Get Data" 
-    - add item: Pipeline > Copy data 
-    - source : http, GlobalSuperStore.xlsx  , Binary
-    - dest : Raw Lakehouse 
-    - Dest: File ,Binary
-    - Dest Folder =  @concat('GlobalSuperStore/',utcNow()) and File= 'file.xlsx'
-    - Save and run
-2. Raw stores ( Lakehouse_BronzeSilver )
-    - add item: Lakehouse 
-    - name: bronze_silver
-    - store sql as parq file and others as is.
-    - structure : Parent/timestamp/Files
-3. Process Data 
-    - **BzToSlvr**
-        - add item: Notebook (BzToSlvr)
-        - Attach Raw lakehouse
-        - Read from csv files /xlsx (pandas+spark)
-        - Add timestamp , hashcolum 
-        - write into delta table
-        - Goto LakeHouse Table and Analyse > SQL endpoint>  check data
-    - **SlvrToGld**
-        - New Notebook >  TSQL script
-        - Explorer : Add Lakehouse and Warehouse (make sure Warehouse is created for next step)
-        - Inspect Data in Warehouse 
-        - create table schema.Table  as select * from Lakehouse.schema.table
-        - Fact And Dim:
-          - DimCustomer:CustomerKey, CustomerID, CustomerName, Segment
-          - DimProduct:ProductKey, ProductID, ProductName, Category, SubCategory
-          - DimGeography:GeographyKey, City, State, Country, Region
-          - DimDate:	DateKey, FullDate, Day, Month, MonthName, Quarter, Year
-          - FactSales:	RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
-5. Processed Data Store (Warehouse_Gold)
-    - add item : Warehouse
-    - Create Views if needed
-    - Open Warehouse > New Semantic Model 
-6. Visualise:
-    1. Go to workspace
-    2. Visualize > Attach > select semantic Model from Step4
-    3. Open Semantic Model > Convert Viewing to Editing 
-    3. Build relationship using pk and FK
-        1. link PK and Fk 
-        2. check Datatypes , Column Names , Data Types
-    4. Row Level Security
-        1. Manager Roles > Create Role and condition
-        2. Workspace > Rt Click on Semantic Model>Security>Add email
-    5. Schdeule refresh
-    6. Ontology :To build Context for AI 
+	- Wait for few min to reflect
+	- Create Fact and Dim
+		- DimCustomer
+		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
+		- DimGeography:GeographyKey, City, State, Country, Region
+		- DimDate: DateKey, FullDate, Day, Month, MonthName, Quarter, Year
+		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
+7. Gold 
+	- Open Warehouse > New Semantic Model
+8. Visualize 
+	- Workspace > Select Semanic Model and attach to Visualize Task
+	- Chnage Semantic model to Editing
+	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
+	- repeat for all Dims , but for date manually select column
 
 
+
+``` Fact and Dim 
+create schema GlobalSuperstore ;
+
+drop table if exits GlobalSuperstore.DimCustomer ;
+drop table if exits GlobalSuperstore.DimGeo;
+drop table if exits GlobalSuperstore.DimProd;
+drop table if exists GlobalSuperstore.DimDate;
+drop table if exists GlobalSuperstore.FactOrders;
+----
+
+create Table GlobalSuperstore.DimCustomer as
+select row_number() over (order by CustomerID) as CustKey,*,1 as Active
+from Lakehouse.GlobalSuperStore.Customer;
+
+----
+
+create Table GlobalSuperstore.DimGeo as
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY City, State, Country, Region) AS GeoKey,
+    City, State, Country, Region,1 as Active
+FROM (
+    SELECT DISTINCT City, State, Country, Region
+    FROM Lakehouse.GlobalSuperStore.Orders
+) AS G;
+
+----
+
+create table GlobalSuperstore.DimProd as
+select Row_Number() over (Order by ProductID, ProductName, Category, [Sub-Category]  ) as ProductKey,*, 1 as Active
+from (
+    select  distinct ProductID, ProductName, Category, [Sub-Category] 
+    from Lakehouse.GlobalSuperStore.Orders
+ ) T;
+
+----
+
+create table GlobalSuperstore.DimDate as 
+SELECT Row_Number() over (order by transactionDates) as DateKey
+    ,transactionDates
+    ,DATEPART(YEAR, transactionDates) AS [Year]
+   , DATEPART(MONTH, transactionDates) AS [MONTH]
+   , DATEPART(DAY, transactionDates) AS [DAY]
+   ,1 as Active
+FROM (
+    SELECT Distinct OrderDate AS transactionDates
+    FROM Lakehouse.GlobalSuperStore.Orders
+    UNION
+    SELECT Distinct ShipDate  AS transactionDates
+    FROM Lakehouse.GlobalSuperStore.Orders
+) AS D;
+
+---
+
+Create Table GlobalSuperstore.FactOrders as 
+SELECT
+    OrderDateDim.DateKey AS OrderKey,
+    ShipDateDim.DateKey AS ShipKey,
+    DimProd.ProductKey,
+    DimGeo.GeoKey,
+    DimCustomer.CustKey,
+    O.Sales,
+    O.Profit,
+    O.Quantity,
+    O.Discount,
+    O.ShippingCost
+FROM Lakehouse.GlobalSuperStore.Orders O
+LEFT JOIN GlobalSuperstore.DimDate OrderDateDim ON O.OrderDate = OrderDateDim.transactionDates
+LEFT JOIN GlobalSuperstore.DimDate ShipDateDim  ON O.ShipDate = ShipDateDim.transactionDates
+Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.ProductName=DimProd.ProductName and  O.Category=DimProd.Category and O.[Sub-Category]=DimProd.[Sub-Category] 
+Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
+Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
+```
+	
