@@ -151,7 +151,7 @@ Url : Open app.fabric.microsoft.com
 - Can use TSQL / spark / Dataflow Gen2
 - Fabric > New Item > Warehouse
 - new view /  Table /Stored Procedure (View+paramters)
-- Vizualiation
+- Visualization
 -   create schema gold
     CREATE TABLE gold.E ( id INT ,Name VARCHAR(100));
     ALTER TABLE gold.E;
@@ -251,7 +251,7 @@ Url : Open app.fabric.microsoft.com
     - Dest: File
     - Dest file Path = realestate and @concat(utcNow(),'/price_size_year.csv')
     - Save and run
-2. Raw stores ( Bronze_Silver_Lakehouse )
+2. Raw stores ( Lakehouse_Bronze_Silver )
     - add item: Lakehouse 
     - name: bronze_silver
     - store sql as parq file and others as is.
@@ -263,7 +263,7 @@ Url : Open app.fabric.microsoft.com
     - Add timestamp , hashcolum
     - write into delta table
     - Goto LakeHouse Table and Analyse > SQL endpoint>  check data 
-4. Processed Data Store 
+4. Processed Data Store (Warehouse_Gold)
     - add item : Warehouse
     - Under 3 (Process Data)  
         - New Notebook >  TSQL script
