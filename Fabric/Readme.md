@@ -251,15 +251,17 @@ Url : Open app.fabric.microsoft.com
     - Dest: File
     - Dest file Path = realestate and @concat(utcNow(),'/price_size_year.csv')
     - Save and run
-2. Raw stores 
+2. Raw stores ( Bronze_Silver_Lakehouse )
     - add item: Lakehouse 
     - name: bronze_silver
-3. Process Data
-    - add item: Notebook 
+    - store sql as parq file and others as is.
+    - structure : Parent/timestamp/Files
+3. Process Data 
+    - add item: Notebook (find Folders, Big Data ,Debugging)
     - Attach Raw lakehouse
     - Read from csv files 
-    - Add Ts , hashcolum
-    -  write into delta table
+    - Add timestamp , hashcolum
+    - write into delta table
     - Goto LakeHouse Table and Analyse > SQL endpoint>  check data 
 4. Processed Data Store 
     - add item : Warehouse
