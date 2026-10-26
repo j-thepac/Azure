@@ -116,7 +116,7 @@ Url : Open app.fabric.microsoft.com
     - Schedule: Pipeline > Schdeule
     - Monitor: 1) Pipleine Line > Run 2)Home > Monitor
 
-### Dataflow Gen2
+### Dataflow Gen2 (Power Query)
 - Power BI based transformations
 - Query Settings: Edit , delete steps
 - Transform : Home , Transform Tab
