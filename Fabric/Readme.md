@@ -254,10 +254,10 @@ Url : Open app.fabric.microsoft.com
     - store sql as parq file and others as is.
     - structure : Parent/timestamp/Files
 3. Process Data 
-    - add item: Notebook (find Folders, Big Data ,Debugging)
+    - add item: Notebook 
     - Attach Raw lakehouse
     - Read from csv files /xlsx (pandas+spark)
-    - Add timestamp , hashcolum
+    - Add timestamp , hashcolum 
     - write into delta table
     - Goto LakeHouse Table and Analyse > SQL endpoint>  check data 
 4. Processed Data Store (Warehouse_Gold)
