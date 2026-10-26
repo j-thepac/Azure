@@ -10,6 +10,8 @@
 3. Tenant : Org /Company 
 4. Workspace : Project Folder
 5. Tenant > Workspace > Experience (Data Engineering , PBI etc) > Item (Notebook)
+6. Workspace:  Project
+
 
 
 ## Account
@@ -26,18 +28,13 @@ Url : Open app.fabric.microsoft.com
 ## Fabric Contents
 
 ### Workspace ( Project )
-- General Info
-    -  Delete Workspace
-- Memory Consumption
 - Git 
 - Networking
 - Monitoring
 - OneLake settings
-- Data Engineering > Spark Configuration
-- Data Factory 
 ### Account Key 
 - Once resource is created 
-- open service > Security > Access Key 
+- Azure >open service > Security > Access Key 
 
 ### Issues with Data Lake 
 - multiple Data Lake Exists across Teams 
@@ -49,28 +46,30 @@ Url : Open app.fabric.microsoft.com
 - One Single for 1 Tenant /  Company  
 - One Lake can be accessed from Windows directly like Onedrive
 - python to access onelake from local system - https://learn.microsoft.com/en-us/fabric/onelake/onelake-access-python
-    a. Make sure az is installed 
-    b. Login with correct user
-    c. Retry few times as code will take some time to connect 
+    - Make sure az is installed 
+    - Login with correct user
+    - Retry few times as code will take some time to connect 
 
 ### LakeHouse = Datalake (Files) + Warehouse (Tables)
 - Created on Onelake 
-- Any Number of LakeHouse in 1 Onelake
+- Onelake = n x LakeHouse
 - 2 types:
     - Files
         - Files and Folders
         - Structure , Unstructured and Semi Structured
         - abfs path (spark compatible )
+        - Bronze
     - Tables: 
         - Delta Tables
         - Versioning 
         - Schema Evaluation
         - User run SQL on Tables
         - User can share SQL endpoints of Delta Tables
+        - Silver
 
 - File to table (delta) :
-    a. Any file (csv) can be converted to Delta Tables but "rtclick > load table.
-    b. Using Notebook 
+    - Any file (csv) can be converted to Delta Tables by "rtclick > load table.
+    - Using Notebook 
         - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
         - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
         - df.write.format("delta").mode("overwrite").options(path="abfss://<path>/Tables/<schema>/<table>/")
@@ -92,7 +91,7 @@ Url : Open app.fabric.microsoft.com
             - Improve perfromance
             - Profile > Workspace Settings > Onelake > Enable Cache
 
-### Datapipeline (Datafactory)
+### Datapipeline
 - Basic Feature :
     - parameters : Set before pipeline 
     - variables : Set at run time  
