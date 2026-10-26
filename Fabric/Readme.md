@@ -13,8 +13,6 @@
 5. Tenant > Workspace > Experience (Data Engineering , PBI etc) > Item (Notebook)
 6. Workspace:  Project
 
-
-
 ## Account
 1. Create account in Azure
 2. Create a sample user in Azure > EntraID > Users
@@ -178,7 +176,6 @@ Url : Open app.fabric.microsoft.com
 
 ### Triggers
 ### Monitoring
-### AirFlow 
 ------------------------------
 ## PBI
 ### Connect : 
@@ -259,7 +256,7 @@ Url : Open app.fabric.microsoft.com
 3. Process Data 
     - add item: Notebook (find Folders, Big Data ,Debugging)
     - Attach Raw lakehouse
-    - Read from csv files 
+    - Read from csv files /xlsx (pandas+spark)
     - Add timestamp , hashcolum
     - write into delta table
     - Goto LakeHouse Table and Analyse > SQL endpoint>  check data 
