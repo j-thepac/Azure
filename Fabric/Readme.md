@@ -264,7 +264,7 @@ Url : Open app.fabric.microsoft.com
     - **SlvrToGld**
         - New Notebook >  TSQL script
         - Explorer :Add Warehouse and Lakehouse
-        - create table gold.Taxi  as select * from Raw.dbo.Taxi
+        - create table schema.Table  as select * from Lakehouse.schema.table
 5. Processed Data Store (Warehouse_Gold)
     - add item : Warehouse
     - Create Views if needed
