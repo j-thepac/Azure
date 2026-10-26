@@ -253,7 +253,7 @@ Url : Open app.fabric.microsoft.com
     - name: bronze_silver
     - store sql as parq file and others as is.
     - structure : Parent/timestamp/Files
-3. Process Data (BzToSlvr_SlvrToGld)
+3. Process Data 
     - **BzToSlvr**
         - add item: Notebook (BzToSlvr)
         - Attach Raw lakehouse
