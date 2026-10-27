@@ -266,7 +266,6 @@ Url : Open app.fabric.microsoft.com
 		- DimCustomer
 		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
 		- DimGeography:GeographyKey, City, State, Country, Region
-		- DimDate: DateKey, FullDate, Day, Month, MonthName, Quarter, Year
 		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
 7. Gold 
 	- Open Warehouse > New Semantic Model
@@ -275,7 +274,7 @@ Url : Open app.fabric.microsoft.com
 	- Chnage Semantic model to Editing
 	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
 	- repeat for all Dims , but for date manually select column
-
+	- File>new report
 
 
 ``` Fact and Dim 
