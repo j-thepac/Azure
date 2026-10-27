@@ -178,14 +178,20 @@ Url : Open app.fabric.microsoft.com
 ### Monitoring
 ------------------------------
 ## PBI
+1. semantic Model cannot be edited
+	- Aggregation : Add Measure
+	- Transformation: Add Column
+ - 
 ### Connect : 
 1. Excel
 2. SQL Server
 3. Direct Table
 4. Semantic Model  / Lake House / Warehouse
 5. Dataverse
-### PowerQuery : Dataflow Gen2 tool in PBI
+### PowerQuery 
   - Before PBI
+  - UI same as DataFlow Gen2
+  - Cannot modify Semantic Model
   - Fix null , Datatypes, Column names , Dups
   - String manipulation
   - Date fix
@@ -321,4 +327,35 @@ Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.Produ
 Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
 Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
 ```
-	
+## Event Streams
+1. Source > Event Stream >Transform >Destination
+2. Sources : Can have > 1
+   - External - CDC , IOT , EventHub
+   - Fabric Events - Workspace , Data
+   - Custom - Kafka
+   - Sample
+3. Transformation : FIlter , Join , Groupby+Window , Agg ,Union
+4. Destination: Can have > 1
+   - Event House (Tables) : Native and uses KQL . 
+   - Lakehouse : Direclty to delta lake but not optimal
+   - Derived Stream: Atleast 1 transform is needed
+   - Activator: Email , Webhooks
+   - Cutome: Kafka
+  
+### Event Activity
+1. NewWorkspace > EventStream
+2. Publish the workspace to Edit
+3. Local Python code to generate Events :
+   - Source > Event Hub > Copy SAS key Connection String Primary and name
+   -  Use in Python code : https://drive.google.com/drive/folders/1eNBaUVqX0_POLYtleiWsKDt7AWth5OHN
+   - ```#pip install azure-eventhub
+        from azure.eventhub import EventHubProducerClient, EventData
+		producer = EventHubProducerClient.from_connection_string(conn_str=CONNECTION_STR, eventhub_name=EVENTHUB_NAME)
+		event_data_batch = producer.create_batch()
+		while true:
+     		event_data_batch.add(EventData(json.dumps({"a":1})))
+        	producer.send_batch(event_data_batch)
+     		time.sleep(3)
+     ```
+   - Run Code and see the result in event stream
+   - Add Transform > Expand (explode rows) > Manage Fields(col  transformation) >GroupBY >Destination (EventHOuse)
