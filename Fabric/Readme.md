@@ -280,20 +280,15 @@ Url : Open app.fabric.microsoft.com
 
 ``` Fact and Dim 
 create schema GlobalSuperstore ;
-
-drop table if exits GlobalSuperstore.DimCustomer ;
-drop table if exits GlobalSuperstore.DimGeo;
-drop table if exits GlobalSuperstore.DimProd;
-drop table if exists GlobalSuperstore.DimDate;
+drop table if exists GlobalSuperstore.DimCustomer ;
+drop table if exists GlobalSuperstore.DimGeo;
+drop table if exists GlobalSuperstore.DimProd;
 drop table if exists GlobalSuperstore.FactOrders;
 ----
-
 create Table GlobalSuperstore.DimCustomer as
 select row_number() over (order by CustomerID) as CustKey,*,1 as Active
 from Lakehouse.GlobalSuperStore.Customer;
-
 ----
-
 create Table GlobalSuperstore.DimGeo as
 SELECT 
     ROW_NUMBER() OVER (ORDER BY City, State, Country, Region) AS GeoKey,
@@ -302,39 +297,16 @@ FROM (
     SELECT DISTINCT City, State, Country, Region
     FROM Lakehouse.GlobalSuperStore.Orders
 ) AS G;
-
 ----
-
 create table GlobalSuperstore.DimProd as
 select Row_Number() over (Order by ProductID, ProductName, Category, [Sub-Category]  ) as ProductKey,*, 1 as Active
 from (
     select  distinct ProductID, ProductName, Category, [Sub-Category] 
     from Lakehouse.GlobalSuperStore.Orders
  ) T;
-
 ----
-
-create table GlobalSuperstore.DimDate as 
-SELECT Row_Number() over (order by transactionDates) as DateKey
-    ,transactionDates
-    ,DATEPART(YEAR, transactionDates) AS [Year]
-   , DATEPART(MONTH, transactionDates) AS [MONTH]
-   , DATEPART(DAY, transactionDates) AS [DAY]
-   ,1 as Active
-FROM (
-    SELECT Distinct OrderDate AS transactionDates
-    FROM Lakehouse.GlobalSuperStore.Orders
-    UNION
-    SELECT Distinct ShipDate  AS transactionDates
-    FROM Lakehouse.GlobalSuperStore.Orders
-) AS D;
-
----
-
 Create Table GlobalSuperstore.FactOrders as 
 SELECT
-    OrderDateDim.DateKey AS OrderKey,
-    ShipDateDim.DateKey AS ShipKey,
     DimProd.ProductKey,
     DimGeo.GeoKey,
     DimCustomer.CustKey,
@@ -342,10 +314,10 @@ SELECT
     O.Profit,
     O.Quantity,
     O.Discount,
-    O.ShippingCost
+    O.ShippingCost,
+    O.OrderDate,
+    O.ShipDate
 FROM Lakehouse.GlobalSuperStore.Orders O
-LEFT JOIN GlobalSuperstore.DimDate OrderDateDim ON O.OrderDate = OrderDateDim.transactionDates
-LEFT JOIN GlobalSuperstore.DimDate ShipDateDim  ON O.ShipDate = ShipDateDim.transactionDates
 Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.ProductName=DimProd.ProductName and  O.Category=DimProd.Category and O.[Sub-Category]=DimProd.[Sub-Category] 
 Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
 Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
