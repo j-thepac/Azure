@@ -268,10 +268,10 @@ Url : Open app.fabric.microsoft.com
 		- DimGeography:GeographyKey, City, State, Country, Region
 		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
 7. Gold 
-	- Open Warehouse > New Semantic Model
-8. Visualize 
-	- Workspace > Select Semanic Model and attach to Visualize Task
-	- Chnage Semantic model to Editing
+	- Open Warehouse > verify Data
+8. Visualize
+    - Add item > Semantic Model > One Lake Catalog >Select Warehouse > Save
+	- Change Semantic model from Viewing >  Editing
 	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
 	- repeat for all Dims , but for date manually select column
 	- File>new report
