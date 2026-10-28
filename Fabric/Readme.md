@@ -233,31 +233,32 @@ Url : Open app.fabric.microsoft.com
 - Merge :Join
 -----------------------
 ## Fabric Framework
-1. Workspace > Predefined TaskFlow > Medallion
-2. Perform:
+1  Fabric > NewWorspace > Select Fabric Trail >Enter "Name" Save
+2. Workspace > Predefined TaskFlow > Medallion
+3. Perform:
 	- Keep only 1 GetData
 	- Remove Silver (Bronze can store both Data)
 	- Remove ML Task 
-3. Rename and add item: 
+4. Rename and add item: 
 	1. Ingest 	> New Item > pipeline
 	2. Bronze_Silver > New Item > LakeHouse
 	3. Clean 	> New Item > Notebook
 	4. Transform 	> New Item > Notebook
 	5. Gold 	> New Item > Warehouse
 	6. Visualize	> New Item > Semantic (add this later)
-4. Ingest : 
+5. Ingest : 
 	- Pipeline + CopyData
 	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
 	- dest = Lakehouse and path  GlobalSuperstore/Timestamp/file.xlsx
 	- Save and Run
-5. Clean:
+6. Clean:
 	- Notebooks pyspark
 	- Add dataitems > DataCatalog> Lakehouse
 	- Read xlsx as pandas(4 tabs) 
 	- Fix column names
 	- Add TS column
 	- Write into Lakehouse as Pyspark Delta
-6. Transform:
+7. Transform:
 	- TSQL
 	- Add dataitems > DataCatalog> Lakehouse
 	- verify Data using inspect: Select * from Lakehouse.schema.Table
@@ -273,9 +274,9 @@ Url : Open app.fabric.microsoft.com
 		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
 		- DimGeography:GeographyKey, City, State, Country, Region
 		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
-7. Gold 
+8. Gold 
 	- Open Warehouse > verify Data
-8. Visualize
+9. Visualize
     - Add item > Semantic Model > One Lake Catalog >Select Warehouse > Save
 	- Change Semantic model from Viewing >  Editing
 	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
@@ -328,25 +329,59 @@ Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State
 Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
 ```
 ## Event Streams
-1. Source > Event Stream >Transform >Destination
+1. Consists of 3 Parts
+   - Source :
+     - Connect only
+     - Eg: AWS , Kafka , Sample , Http , Azure Events and IOT , Custom (python local)
+   - Event Stream: 
+   - Destination
+### Sample 
+1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
+2. Add Item > Event Stream "Test"
+3. 
+
+1. 
 2. Sources : Can have > 1
    - External - CDC , IOT , EventHub
    - Fabric Events - Workspace , Data
    - Custom - Kafka
    - Sample
-3. Transformation : FIlter , Join , Groupby+Window , Agg ,Union
+3. Transformation : Aggregate, Expand(explode), Filter, Group by, Manage fields, and Union
 4. Destination: Can have > 1
    - Event House (Tables) : Native and uses KQL . 
    - Lakehouse : Direclty to delta lake but not optimal
    - Derived Stream: Atleast 1 transform is needed
    - Activator: Email , Webhooks
    - Cutome: Kafka
-  
-### Event Activity
-1. NewWorkspace > EventStream
-2. Publish the workspace to Edit
-3. Local Python code to generate Events :
-   - Source > Event Hub > Copy SAS key Connection String Primary and name
+### KonkanRailway Dashboard
+1. Source: Event Stream (Get data) :
+	- Connect Data sources
+	- http > baseurl :https://konkan-railway-api.vercel.app/api/v4/fetchTrains
+	- connect
+	- Notice Data already being read
+2. Destination: 
+	- Add Destination :Event House 
+	- Create New EventHouse 
+	- Select Default db
+	- Create new Table "konkantable"
+	- Format Json 
+	- Save
+3. Click on Publish to start ingesting data 
+	- Wait till both changes state to Active
+4. Click on EventHouse Item > Refresh > To see data 
+5. Workspace > Konkan EventHouse > 
+	- DB > select Table > View Data (Datain JSON)
+	- Create new Table using KQL
+	- Add new table 
+	- COnvert JSON > new table 
+	- CLick on Real-Time Dashoard
+ -  
+### Activity: Custom Python
+1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
+2. Workspace > EventStream "test" > Create >
+3. Add Source > Custom > Add
+4. Publish the workspace to Edit
+5. Source > Event Hub > Copy SAS key Connection String Primary and name
    -  Use in Python code : https://drive.google.com/drive/folders/1eNBaUVqX0_POLYtleiWsKDt7AWth5OHN
    - ```#pip install azure-eventhub
         from azure.eventhub import EventHubProducerClient, EventData
