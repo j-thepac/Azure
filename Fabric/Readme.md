@@ -446,8 +446,15 @@ T
 .create table Tablename(id:int,name:string)
 .ingest inline into table Tablename <| 1,a
 .clear table Table name -- off one lake availablity
-.drop materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table T
+.drop materialized-view V
+------------------
+.create materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table T
 {T
 |count}
-.create materialized-view with 
+-----------------
+.create function with f(id:int){
+T
+|where c=id}  --f(1)
+
+-- pracise window functions
 -- 
