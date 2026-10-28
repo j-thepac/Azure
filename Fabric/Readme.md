@@ -358,7 +358,8 @@ Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
 7. Add one more Destination (Eventhouse) direclty from source
 8. save
 9. Publich to Live Mode
-10. 
+10. Open EventHouse > DB> Table and notice Data increasing
+11. To stop : Publish Eventstream > Deactivate
 
 
 ### Sample 
