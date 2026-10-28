@@ -329,12 +329,38 @@ Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State
 Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
 ```
 ## Event Streams
-1. Consists of 3 Parts
-   - Source :
+1. Is a DAG
+2. Consists of 4 Items
+   a. Source :
      - Connect only
      - Eg: AWS , Kafka , Sample , Http , Azure Events and IOT , Custom (python local)
-   - Event Stream: 
-   - Destination
+   b. Event Stream:
+		- Acts as a connection point
+   c. Transformation: Manage fields, Aggregate, Expand(explode), Filter, Group by, Union
+		- ManageFields : change column name ,type , new Col , datetime , String and Math operation
+   d. Destination:
+     	- EventHouse : KQL
+     	- Lakehouse
+     	- Stream : Into other stream
+     	- Activator: alert
+3. Mode: Edit and Live
+
+### BIkeShare 
+- Design : BikeSharing > EventStream > A. Destination (Save Original)
+  									 > B. Transformation > Filter > Destination
+  
+1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
+2. Add Item > Event Stream "Test" > Add sample >Bike > Add
+3. Once add it is in Edit mode and User can preview the Data
+4. Add ManageFields > select current_ts , BikeID, no_Bikes, No_Empty_docks
+5. Add Filter > No_Bikes =0
+6. Add Destination > EventHouse > Create New EventHouse , default DB and create new table
+7. Add one more Destination (Eventhouse) direclty from source
+8. save
+9. Publich to Live Mode
+10. 
+
+
 ### Sample 
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
 2. Add Item > Event Stream "Test"
