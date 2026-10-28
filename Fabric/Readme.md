@@ -421,3 +421,33 @@ Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
      ```
    - Run Code and see the result in event stream
    - Add Transform > Expand (explode rows) > Manage Fields(col  transformation) >GroupBY >Destination (EventHOuse)
+### KQL : Kusto Query Language
+1. | symbol passes the result of one operation to the next, forming a query pipeline.
+
+```
+table_name --show table
+
+table_name 
+|project c1 ,c2	-- select
+|extend c3 = fn()
+|take 100	-- pyspark rdd
+|count
+
+
+table_name
+| where c != 30 and c2 == '1' and c3 contains "a"
+| sort by Timestamp desc
+
+
+T
+| summarize new_col = count() by c -- group by c
+
+.show_tables
+.create table Tablename(id:int,name:string)
+.ingest inline into table Tablename <| 1,a
+.clear table Table name -- off one lake availablity
+.drop materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table T
+{T
+|count}
+.create materialized-view with 
+-- 
