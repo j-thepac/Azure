@@ -1,18 +1,8 @@
 # Fabric
 - PurView
-1. There is 1 Fabric account for a Tenent
-2. Admin creates multiple workspaces for Project / Domains
-3. All of these share 1 unified lake called One Lake
 
-## Keywords
-1. Capacity:  Resource Capacity
-2. Experience : Services
-3. Tenant : Org /Company 
-4. Workspace : Project Folder
-5. Tenant > Workspace > Experience (Data Engineering , PBI etc) > Item (Notebook)
-6. Workspace:  Project
-
-## Account
+## Learn By Doing : Fabric Practice 
+PreReq: Create Fabric Account
 1. Create account in Azure
 2. Create a sample user in Azure > EntraID > Users
 3. Once Created > Click on new User >Assigned role >Add assignments> Add Fabric Administrator
@@ -23,23 +13,176 @@
 
 Url : Open app.fabric.microsoft.com
 
-## Fabric Contents
+### Activity 1: Build Medallion Architecture : 
 
-### Workspace ( Project )
-- Git 
-- Networking
-- Monitoring
-- OneLake settings
-### Account Key 
+1. Open Fabric > NewWorspace > Select Fabric Trail >Enter "test" Save
+2. Workspace > Predefined TaskFlow > Medallion
+3. Perform:
+	- Keep only 1 GetData
+	- Remove Silver (Bronze can store both Silver and Bronze)
+	- Remove ML Task 
+4. Rename and add item: 
+	1. Ingest 	> New Item > pipeline
+	2. Bronze_Silver > New Item > LakeHouse
+	3. Clean 	> New Item > Notebook
+	4. Transform 	> New Item > Notebook
+	5. Gold 	> New Item > Warehouse
+	6. Visualize	> New Item > Semantic (add this later)
+5. Ingest : 
+	- Pipeline + CopyData
+	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
+	- dest = Lakehouse and path  GlobalSuperstore/Timestamp/file.xlsx
+	- Save and Run
+6. Clean:
+	- Notebooks pyspark
+	- Add dataitems > DataCatalog> Lakehouse
+	- Read xlsx as pandas(4 tabs) 
+	- Fix column names
+	- Add TS column
+	- Write into Lakehouse as Pyspark Delta
+7. Transform:
+	- TSQL
+	- Add dataitems > DataCatalog> Lakehouse
+	- verify Data using inspect: Select * from Lakehouse.schema.Table
+	- create schema GlobalSuperstore
+	- ```  drop table if exists GlobalSuperstore.DimCustomer;
+		create Table GlobalSuperstore.DimCustomer as
+		select row_number() over (order by CustomerID) as CustKey,*,1 as Active
+		from Lakehouse.GlobalSuperStore.Customer```
+	- Wait for few min to reflect
+	- Create Fact and Dim (code below)
+		- DimCustomer
+		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
+		- DimGeography:GeographyKey, City, State, Country, Region
+		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
+8. Gold 
+	- Open Warehouse > verify Data
+9. Visualize
+    - Add item > Semantic Model > One Lake Catalog >Select Warehouse > Save
+	- Change Semantic model from Viewing >  Editing
+	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
+	- repeat for all Dims 
+
+
+``` 
+Fact and Dim 
+create schema GlobalSuperstore ;
+drop table if exists GlobalSuperstore.DimCustomer ;
+drop table if exists GlobalSuperstore.DimGeo;
+drop table if exists GlobalSuperstore.DimProd;
+drop table if exists GlobalSuperstore.FactOrders;
+----
+create Table GlobalSuperstore.DimCustomer as
+select row_number() over (order by CustomerID) as CustKey,*,1 as Active
+from Lakehouse.GlobalSuperStore.Customer;
+----
+create Table GlobalSuperstore.DimGeo as
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY City, State, Country, Region) AS GeoKey,
+    City, State, Country, Region,1 as Active
+FROM (
+    SELECT DISTINCT City, State, Country, Region
+    FROM Lakehouse.GlobalSuperStore.Orders
+) AS G;
+----
+create table GlobalSuperstore.DimProd as
+select Row_Number() over (Order by ProductID, ProductName, Category, [Sub-Category]  ) as ProductKey,*, 1 as Active
+from (
+    select  distinct ProductID, ProductName, Category, [Sub-Category] 
+    from Lakehouse.GlobalSuperStore.Orders
+ ) T;
+----
+Create Table GlobalSuperstore.FactOrders as 
+SELECT
+    DimProd.ProductKey,
+    DimGeo.GeoKey,
+    DimCustomer.CustKey,
+    O.Sales,
+    O.Profit,
+    O.Quantity,
+    O.Discount,
+    O.ShippingCost,
+    O.OrderDate,
+    O.ShipDate
+FROM Lakehouse.GlobalSuperStore.Orders O
+Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.ProductName=DimProd.ProductName and  O.Category=DimProd.Category and O.[Sub-Category]=DimProd.[Sub-Category] 
+Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
+Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
+```
+
+### Activity2 : Create PBI Dashboard
+Pre- Req
+- Install PBI desktop 
+- Import semantic model in PBI
+
+1. Setup Canvas
+	- Set BG 
+	- Set Header (TextBox > header)
+2. Card Total Sales 
+	- Visual >Callout>Value> font size
+	- Visual > General > add Title
+3. Bar graph Sales growth 
+	- Visible x and Y axis 
+	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
+	- Wholenumber
+
+### Activity 3: BikeShare 
+- Design : Src > EventStream > A. Destination (Save Original)
+  									 > B. Transformation > Filter > Destination
+  
+1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
+2. Add Item > Event Stream "Test" > Add sample >Bike > Add
+3. Once add it is in Edit mode and User can preview the Data
+4. Add ManageFields > select current_ts , BikeID, no_Bikes, No_Empty_docks
+5. Add Filter > No_Bikes =0
+6. Add Destination > EventHouse > Create New EventHouse , default DB and create new table
+7. Add one more Destination (Eventhouse) direclty from source
+8. save
+9. Publich to Live Mode
+10. Open EventHouse > DB> Table and notice Data increasing
+11. To stop : Publish Eventstream > Deactivate
+
+### Activity 4: CI/CD
+#### CI
+1. Goto Git > Create new Repo > Copy url
+2. Create a main Branch 
+  - Create a CodeSpace > checkout main branch > Modify Readme.md > Commit and push
+  - Code space also available in top "+" button
+3. Git >Settings > Developer Settings > Personal Access Token > Create and Copy 
+4. Open Fabric > Settings > Admin > search "git" > Enable all
+5. Workspace > WorkspaceSettings > Git > add name ,url and token >create >  connect 
+6. Create new Notebook > Save
+7. Workspace > Notice> Source Control has come up > Open > Commit File 
+
+#### CD
+1. Create 1 more workspace "Prod"
+2. Workspaces > Deployment Pipelines > New pipeline > Keep only 2 ie., Dev > Prod > Create
+3. Select each item in Pipeline and assign correct workspace
+4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
+----------------------------------
+## Basics
+1. Tenant is nothing but Company /Org
+2. There is always 1 tenant
+3. 1 tenant = 1 OneLake (N x lakehouses + N x Warehouses)
+4. Company Can have multiple Projects = Workspaces
+5. All Lakehouse and warehouse are created on same Onelake
+
+
+
+## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
+
+
+
+## OneLake 
 
 ### Issues with Data Lake 
 - multiple Data Lake Exists across Teams 
 - Data Duplication
 - Blob to gen2 : While create under advanced enable "Enable hierarchical namespace"
 
-### One Lake 
+**Intro**
 - Built on Data Lake Gen2
 - One Single for 1 Tenant /  Company  
 - One Lake can be accessed from Windows directly like Onedrive
@@ -187,22 +330,7 @@ What cannot be checked in
 - Lakehouse tables
 - Warehouse schema only
 
-1. Goto Git > Create new Repo > Copy url
-2. Create a main Branch 
-  - Create a CodeSpace > checkout main branch > Modify Readme.md > Commit and push
-  - Code space also available in top "+" button
-3. Git >Settings > Developer Settings > Personal Access Token > Create and Copy 
-4. Open Fabric > Settings > Admin > search "git" > Enable all
-5. Workspace > WorkspaceSettings > Git > add name ,url and token >create >  connect 
-6. Create new Notebook > Save
-7. Workspace > Notice> Source Control has come up > Open > Commit File 
 
-### CD
-Note : Parameterize Env 
-1. Create 1 more workspace "Prod"
-2. Workspaces > Deployment Pipelines > New pipeline > Keep only 2 ie., Dev > Prod > Create
-3. Select each item in Pipeline and assign correct workspace
-4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
 ------------------------------
 ## PBI
 1. semantic Model created in Fabric cannot be edited in PBI
@@ -211,20 +339,9 @@ Note : Parameterize Env
    - PBI service : To share dashboard 
 4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
 5. Fabric > Settings > Developer Settings > Enable PBI
-### Activity
-- Pre- Req
-	- Create semantic model from Fabice
-	- Import semantic model in PBI
-- setup
-	- Set BG 
-	- Set Header (TextBox > header)
-1. Card Total Sales 
-	- Visual >Callout>Value> font size
-	- Visual > General > add Title
-2. Bar graph Sales growth 
-	- Visible x and Y axis 
-	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
-	- Wholenumber
+6. DAX = Excel Formula Eg:YEAR(FactOrders[ShipDate])
+
+
 ### Views on the left side
   - report View : UI chnages
   - Table View : Data changes
@@ -272,177 +389,34 @@ Note : Parameterize Env
   - Create Custom Column
   - Merge Column
 -----------------------
-## Fabric Framework
-1  Fabric > NewWorspace > Select Fabric Trail >Enter "Name" Save
-2. Workspace > Predefined TaskFlow > Medallion
-3. Perform:
-	- Keep only 1 GetData
-	- Remove Silver (Bronze can store both Data)
-	- Remove ML Task 
-4. Rename and add item: 
-	1. Ingest 	> New Item > pipeline
-	2. Bronze_Silver > New Item > LakeHouse
-	3. Clean 	> New Item > Notebook
-	4. Transform 	> New Item > Notebook
-	5. Gold 	> New Item > Warehouse
-	6. Visualize	> New Item > Semantic (add this later)
-5. Ingest : 
-	- Pipeline + CopyData
-	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
-	- dest = Lakehouse and path  GlobalSuperstore/Timestamp/file.xlsx
-	- Save and Run
-6. Clean:
-	- Notebooks pyspark
-	- Add dataitems > DataCatalog> Lakehouse
-	- Read xlsx as pandas(4 tabs) 
-	- Fix column names
-	- Add TS column
-	- Write into Lakehouse as Pyspark Delta
-7. Transform:
-	- TSQL
-	- Add dataitems > DataCatalog> Lakehouse
-	- verify Data using inspect: Select * from Lakehouse.schema.Table
-	- create schema GlobalSuperstore
-	- ```  drop table if exists GlobalSuperstore.DimCustomer;
-		create Table GlobalSuperstore.DimCustomer as
-		select row_number() over (order by CustomerID) as CustKey,*,1 as Active
-		from Lakehouse.GlobalSuperStore.Customer```
 
-	- Wait for few min to reflect
-	- Create Fact and Dim
-		- DimCustomer
-		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
-		- DimGeography:GeographyKey, City, State, Country, Region
-		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
-8. Gold 
-	- Open Warehouse > verify Data
-9. Visualize
-    - Add item > Semantic Model > One Lake Catalog >Select Warehouse > Save
-	- Change Semantic model from Viewing >  Editing
-	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
-	- repeat for all Dims , but for date manually select column
-	- File>new report
-
-
-``` Fact and Dim 
-create schema GlobalSuperstore ;
-drop table if exists GlobalSuperstore.DimCustomer ;
-drop table if exists GlobalSuperstore.DimGeo;
-drop table if exists GlobalSuperstore.DimProd;
-drop table if exists GlobalSuperstore.FactOrders;
-----
-create Table GlobalSuperstore.DimCustomer as
-select row_number() over (order by CustomerID) as CustKey,*,1 as Active
-from Lakehouse.GlobalSuperStore.Customer;
-----
-create Table GlobalSuperstore.DimGeo as
-SELECT 
-    ROW_NUMBER() OVER (ORDER BY City, State, Country, Region) AS GeoKey,
-    City, State, Country, Region,1 as Active
-FROM (
-    SELECT DISTINCT City, State, Country, Region
-    FROM Lakehouse.GlobalSuperStore.Orders
-) AS G;
-----
-create table GlobalSuperstore.DimProd as
-select Row_Number() over (Order by ProductID, ProductName, Category, [Sub-Category]  ) as ProductKey,*, 1 as Active
-from (
-    select  distinct ProductID, ProductName, Category, [Sub-Category] 
-    from Lakehouse.GlobalSuperStore.Orders
- ) T;
-----
-Create Table GlobalSuperstore.FactOrders as 
-SELECT
-    DimProd.ProductKey,
-    DimGeo.GeoKey,
-    DimCustomer.CustKey,
-    O.Sales,
-    O.Profit,
-    O.Quantity,
-    O.Discount,
-    O.ShippingCost,
-    O.OrderDate,
-    O.ShipDate
-FROM Lakehouse.GlobalSuperStore.Orders O
-Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.ProductName=DimProd.ProductName and  O.Category=DimProd.Category and O.[Sub-Category]=DimProd.[Sub-Category] 
-Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
-Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
-```
 ## Event Streams
 1. Is a DAG
-2. Consists of 4 Items
-   a. Source :
-     - Connect only
-     - Eg: AWS , Kafka , Sample , Http , Azure Events and IOT , Custom (python local)
-   b. Event Stream:
-		- Acts as a connection point
-   c. Transformation: Manage fields, Aggregate, Expand(explode), Filter, Group by, Union
-		- ManageFields : change column name ,type , new Col , datetime , String and Math operation
-   d. Destination:
-     	- EventHouse : KQL
-     	- Lakehouse
-     	- Stream : Into other stream
-     	- Activator: alert
-3. Mode: Edit and Live
-
-### BIkeShare 
-- Design : BikeSharing > EventStream > A. Destination (Save Original)
-  									 > B. Transformation > Filter > Destination
-  
-1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
-2. Add Item > Event Stream "Test" > Add sample >Bike > Add
-3. Once add it is in Edit mode and User can preview the Data
-4. Add ManageFields > select current_ts , BikeID, no_Bikes, No_Empty_docks
-5. Add Filter > No_Bikes =0
-6. Add Destination > EventHouse > Create New EventHouse , default DB and create new table
-7. Add one more Destination (Eventhouse) direclty from source
-8. save
-9. Publich to Live Mode
-10. Open EventHouse > DB> Table and notice Data increasing
-11. To stop : Publish Eventstream > Deactivate
+2. Consists of 3 Items
+    -Source+EventStream
+    -Trnsformation
+    -Destination
+3. Source :
+    - Event Stream: Acts as a connection point
+    - External - CDC , IOT , EventHub
+    - Fabric Events - Workspace , Data
+    - Custom - Kafka
+    - Sample
+4. Transformation: Manage fields, Aggregate, Expand(explode), Filter, Group by, Union
+    - ManageFields : change column name ,type , new Col , datetime , String and Math operation
+5. Destination:
+    - EventHouse : KQL
+    - Lakehouse
+    - Stream : Into other stream
+    - Activator: alert
+3. Mode: 
+    - Edit : Preview
+    - Live : Ingest Date
+4. Source >http > https://konkan-railway-api.vercel.app/api/v4/fetchTrains
+5. Real TIme Dashoboard using Maps with Latitude and Longitude
 
 
-### Sample 
-1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
-2. Add Item > Event Stream "Test"
-3. 
 
-1. 
-2. Sources : Can have > 1
-   - External - CDC , IOT , EventHub
-   - Fabric Events - Workspace , Data
-   - Custom - Kafka
-   - Sample
-3. Transformation : Aggregate, Expand(explode), Filter, Group by, Manage fields, and Union
-4. Destination: Can have > 1
-   - Event House (Tables) : Native and uses KQL . 
-   - Lakehouse : Direclty to delta lake but not optimal
-   - Derived Stream: Atleast 1 transform is needed
-   - Activator: Email , Webhooks
-   - Cutome: Kafka
-### KonkanRailway Dashboard
-1. Source: Event Stream (Get data) :
-	- Connect Data sources
-	- http > baseurl :https://konkan-railway-api.vercel.app/api/v4/fetchTrains
-	- connect
-	- Notice Data already being read
-2. Destination: 
-	- Add Destination :Event House 
-	- Create New EventHouse 
-	- Select Default db
-	- Create new Table "konkantable"
-	- Format Json 
-	- Save
-3. Click on Publish to start ingesting data 
-	- Wait till both changes state to Active
-4. Click on EventHouse Item > Refresh > To see data 
-5. Workspace > Konkan EventHouse > 
-	- DB > select Table > View Data (Datain JSON)
-	- Create new Table using KQL
-	- Add new table 
-	- COnvert JSON > new table 
-	- CLick on Real-Time Dashoard
- -  
 ### Activity: Custom Python
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
 2. Workspace > EventStream "test" > Create >
@@ -479,7 +453,7 @@ table_name
 | sort by Timestamp desc
 
 
-T
+table_name
 | summarize new_col = count() by c -- group by c
 
 .show_tables
@@ -488,13 +462,13 @@ T
 .clear table Table name -- off one lake availablity
 .drop materialized-view V
 ------------------
-.create materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table T
-{T
+.create materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table table_name
+{table_name
 |count}
 -----------------
 .create function with f(id:int){
-T
+table_name
 |where c=id}  --f(1)
 
--- pracise window functions
+-- practise window functions
 -- 
