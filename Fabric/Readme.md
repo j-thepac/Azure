@@ -13,7 +13,9 @@ PreReq: Create Fabric Account
 
 Url : Open app.fabric.microsoft.com
 
-### Activity 1: Build Medallion Architecture : 
+### Activity 1: Build Medallion Architecture  
+**Design** : 
+Src > LakeHouse(Files) > Lakehouse(Delta) > Warehouse(SQL)
 
 1. Open Fabric > NewWorspace > Select Fabric Trail >Enter "test" Save
 2. Workspace > Predefined TaskFlow > Medallion
