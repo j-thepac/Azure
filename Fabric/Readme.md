@@ -175,6 +175,34 @@ Url : Open app.fabric.microsoft.com
 
 ### Triggers
 ### Monitoring
+
+
+
+## CI CD
+### CI / Git
+What cannot be checked in
+- Any Data
+- File Eg: Env files 
+- Schedule
+- Lakehouse tables
+- Warehouse schema only
+
+1. Goto Git > Create new Repo > Copy url
+2. Create a main Branch 
+  - Create a CodeSpace > checkout main branch > Modify Readme.md > Commit and push
+  - Code space also available in top "+" button
+3. Git >Settings > Developer Settings > Personal Access Token > Create and Copy 
+4. Open Fabric > Settings > Admin > search "git" > Enable all
+5. Workspace > WorkspaceSettings > Git > add name ,url and token >create >  connect 
+6. Create new Notebook > Save
+7. Workspace > Notice> Source Control has come up > Open > Commit File 
+
+### CD
+Note : Parameterize Env 
+1. Create 1 more workspace "Prod"
+2. Workspaces > Deployment Pipelines > New pipeline > Keep only 2 ie., Dev > Prod > Create
+3. Select each item in Pipeline and assign correct workspace
+4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
 ------------------------------
 ## PBI
 1. semantic Model created in Fabric cannot be edited in PBI
@@ -182,7 +210,7 @@ Url : Open app.fabric.microsoft.com
 3. PBI
    - PBI service : To share dashboard 
 4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
-
+5. Fabric > Settings > Developer Settings > Enable PBI
 ### Activity
 - Pre- Req
 	- Create semantic model from Fabice
