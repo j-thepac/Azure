@@ -1,6 +1,5 @@
 # Fabric
 - PurView
-- Streaming
 1. There is 1 Fabric account for a Tenent
 2. Admin creates multiple workspaces for Project / Domains
 3. All of these share 1 unified lake called One Lake
