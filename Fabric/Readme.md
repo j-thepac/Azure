@@ -178,32 +178,33 @@ Url : Open app.fabric.microsoft.com
 ### Monitoring
 ------------------------------
 ## PBI
-1. semantic Model cannot be edited
-	- Aggregation : Add Measure
-	- Transformation: Add Column
- - 
-### Connect : 
-1. Excel
-2. SQL Server
-3. Direct Table
-4. Semantic Model  / Lake House / Warehouse
-5. Dataverse
-### PowerQuery 
-  - Before PBI
-  - UI same as DataFlow Gen2
-  - Cannot modify Semantic Model
-  - Fix null , Datatypes, Column names , Dups
-  - String manipulation
-  - Date fix
-  - Custom Column (based on condition)
-  - Feature : Format , Extract , Date buttons
-  - Create Custom Column
-  - Merge Column
+1. semantic Model created in Fabric cannot be edited in PBI
+2. Measure = Aggregration ,  Column = WithColumn
+3. PBI
+   - PBI service : To share dashboard 
+4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
+
+### Activity
+- Pre- Req
+	- Create semantic model from Fabice
+	- Import semantic model in PBI
+- setup
+	- Set BG 
+	- Set Header (TextBox > header)
+1. Card Total Sales 
+	- Visual >Callout>Value> font size
+	- Visual > General > add Title
+2. Bar graph Sales growth 
+	- Visible x and Y axis 
+	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
+	- Wholenumber
 ### Views on the left side
   - report View : UI chnages
   - Table View : Data changes
-### Charts : 
+  - Semantic View
+### Visualizations (Charts) : 
 - Card,Line,Bar,Slicer and clear button,Kpi,Guage ,Maps , New Page ,Matrix
+- To change font : Visualization > Format icon > Values
 ### Filter :
 - Fabric > View > Filter  or Data > Select table > rtck > measure
 - types: 1 chart , 1 Page ,all pages
@@ -217,6 +218,7 @@ Url : Open app.fabric.microsoft.com
 - Format graph
 - Manage Relationships between tables
 ### DAX (Excel Formula)
+- ship_year = YEAR(FactOrders[ShipDate])
 - Examples: if statement , case , variables , functions
     ```Eg order_weekend_weekday = 
         var tmp_day = FORMAT(Orders[Order Date],"dddd")
@@ -231,6 +233,17 @@ Url : Open app.fabric.microsoft.com
     - Show in chart (Eg: Pie)
 - Append Query : Union
 - Merge :Join
+### PowerQuery 
+  - Before PBI
+  - UI same as DataFlow Gen2
+  - Cannot modify Semantic Model
+  - Fix null , Datatypes, Column names , Dups
+  - String manipulation
+  - Date fix
+  - Custom Column (based on condition)
+  - Feature : Format , Extract , Date buttons
+  - Create Custom Column
+  - Merge Column
 -----------------------
 ## Fabric Framework
 1  Fabric > NewWorspace > Select Fabric Trail >Enter "Name" Save
