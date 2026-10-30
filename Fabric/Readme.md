@@ -218,7 +218,11 @@ Pre- Req
 ### LakeHouse = Datalake (Files) + Warehouse (Tables)
 - Created on Onelake 
 - Onelake = n x LakeHouse
-- Can have shortcut pointing to : Other Onelake , Gen2 , S3 , Dataverse etc., (Goto LakeHouse > Files >Ck 3 dots > Shortcut)
+- ShortCut:
+	- Can have shortcut pointing to : Other Onelake , Gen2 , S3 , Dataverse etc.,
+	- Goto LakeHouse > Files >Ck 3 dots > Shortcut
+   	- Avoid Data Duplication
+   	- Can be used in Spark 
 - 2 types:
     - Files
         - Files and Folders
