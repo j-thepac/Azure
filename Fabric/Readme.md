@@ -169,7 +169,16 @@ Pre- Req
 4. Company Can have multiple Projects = Workspaces
 5. All Lakehouse and warehouse are created on same Onelake
 6. Domain = Group of Workspaces
-   
+
+## Roles:
+1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
+2. Domain Admin -
+   	- Can View only 1 domain
+   	- add Contibutors to his Domain
+   	- Change settings of his domain
+3. Workspace Admin -
+	- Can View and Change only to his workspace
+
 ### Workspaces
 1. Spark settings done at workspace
 2. Install spark lib at workspace
@@ -185,16 +194,19 @@ Pre- Req
    - Workspace > Settings > OneLake > Enable cache for shortcuts
    - Keep data only fro 24hour
    - Each file <= 1GB only
-   
-### Roles:
-1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
-2. Domain Admin -
-   	- Can View only 1 domain
-   	- add Contibutors to his Domain
-   	- Change settings of his domain
-3. Workspace Admin -
-	- Can View and Change only to his workspace 
-   
+6. Roles in Workspace:
+	- Admin : Perform All operations 
+	- Member : Performs All operation except Update ,Delete Workspace and Add remove people
+	- Contributor [Developer] :
+		- Cannot Update ,Delete Workspace and Add remove people
+	 	- Cannot create and modify DB and Warehouse
+  	 	- Can Read , Create , Write , Edit and run all items 
+       	- Can Make connections 
+ 	- Viewer:
+		- Read Data and Pipleines
+		- Cannot execute 
+		- Cannot make new connections
+
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
