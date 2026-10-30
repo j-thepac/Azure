@@ -169,7 +169,9 @@ Pre- Req
 4. Company Can have multiple Projects = Workspaces
 5. All Lakehouse and warehouse are created on same Onelake
 6. Domain = Group of Workspaces
-
+7. Capacity Level = Compute level kept seperate for Workspace
+8. Principle of least privilage( PolP ) = Min level of access
+9. 
 ## Roles:
 1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
 2. Domain Admin -
