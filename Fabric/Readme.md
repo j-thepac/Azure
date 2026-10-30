@@ -171,21 +171,23 @@ Pre- Req
 6. Domain = Group of Workspaces
 7. Capacity Level = Compute level kept seperate for Workspace
 
-  
-
 ## Roles:
 Principle of least privilage( PolP ) = Min level of access
 
 1. Global Admin : All access and all services and all tenants and all users /groups. Create Fabric Admin 
 2. Fabric Admin (Tenant Level) - Fabric scope across all Domain (group of Workspaces) Eg: Create , delete domains etc.,
-3. Capacity Admin : Controls Compute (spark) capacity for each workspace 
-4. Domain : Manage 1 Domain
+3. Capacity Admin :
+	- Controls Compute (spark) capacity for each workspace
+ 	- Cannot access other things
+	- Fabric > Settings >Capacity > 
+5. Domain : Manage 1 Domain
    	- Fabric > Settings > Domain > Create Domain and add users
-	- Admin  
+	- Domain Admin  
 	   	- Can View only 1 domain
 	   	- add Contibutors to his Domain
 	   	- Change settings of his domain
-    -  Contributor 
+    - Domain Contributor
+    -  
 6. Workspace Roles
    	- Workspace > Manage access 
    	- Admin : Perform All operations of his workspace + Update and delete +Add Memebers
@@ -222,8 +224,8 @@ Principle of least privilage( PolP ) = Min level of access
      - User needs to already have access to Warehouse / Lakehouse 
 	 - Lakehouse :
   		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
-      	- Tables : TSQL Grant Select (row , column and Table (OLS) )
-	 - Data Warehouse : Grant Select (row , column and Table (OLS) )
+      	- Tables :  GRANT SELECT (row , column and Table  ) , REVOKE, DENY
+	 - Data Warehouse : GRANT SELECT (row , column and Table )
 9. Masking
     - ```create table T (nm varchar(10) masked with (function=partial(1,"-",2)') NULL)```
     - ``` Alter Table T add masked with (function=partial(1,"-",2)');```
