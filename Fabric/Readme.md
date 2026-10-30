@@ -195,8 +195,6 @@ Pre- Req
 - Once resource is created 
 - Azure >open service > Security > Access Key 
 
-
-
 ## OneLake 
 
 ### Issues with Data Lake 
@@ -336,12 +334,11 @@ Pre- Req
 
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
-- Warehouse/Lakehouse > Semantic Model > PBI 
+- Warehouse/Lakehouse > Semantic Model > PBI
+- Can be saved to Onelake : Workspace>rt ck Semantic Model > OneLake Integration
 
 ### Triggers
 ### Monitoring
-
-
 
 ## CI CD
 ### CI / Git
