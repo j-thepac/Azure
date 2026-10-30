@@ -207,7 +207,7 @@ Pre- Req
 **Intro**
 - Built on Data Lake Gen2
 - One Single for 1 Tenant /  Company  
-- One Lake can be accessed from Windows directly like Onedrive
+- One Lake can be accessed from Windows directly like Onedrive and can view all items like Db , lakeshouse , notebooks etc., 
 - python to access onelake from local system - https://learn.microsoft.com/en-us/fabric/onelake/onelake-access-python
     - Make sure az is installed 
     - Login with correct user
