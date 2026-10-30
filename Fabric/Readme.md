@@ -208,12 +208,15 @@ Pre- Req
 		- Cannot make new connections
 7. Item level Security: Access to Entire Warehosue , Lakehouse
    	- Workspace > Select Warehouse > ck 3 dots > Manage permissions > Add Users 
-9. Data Level Security: Access to individual Data in Lakehosue and Warehouse
+9. Data Level Security: Individual Data in Lakehosue and Warehouse
+     - User needs to already have access to Warehouse / Lakehouse 
 	 - Lakehouse :
   		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
       	- Tables : TSQL Grant Select (row , column and Table (OLS) )
 	 - Data Warehouse : Grant Select (row , column and Table (OLS) )
-   
+10. Masking
+    - ```create table T (nm varchar(10) masked with (function=partial(1,"-",2)') NULL)```
+    - ``` Alter Table T add masked with (function=partial(1,"-",2)');```
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
