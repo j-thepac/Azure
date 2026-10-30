@@ -163,14 +163,34 @@ Pre- Req
 4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
 ----------------------------------
 ## Basics
-1. Tenant is nothing but Company /Org
+1. Tenant is Company /Org
 2. There is always 1 tenant
 3. 1 tenant = 1 OneLake (N x lakehouses + N x Warehouses)
 4. Company Can have multiple Projects = Workspaces
 5. All Lakehouse and warehouse are created on same Onelake
+6. Domain = Group of Workspaces
+   
+### Workspaces
+1. Spark settings done at workspace
+2. Install spark lib at workspace
+3. Default Spark:
+	- Always running
+	- start immediately (if no customization is applied)
+4. Custom Spark:
+	- Setting : Workspace > Setting > Data Eng > Env > Set Default Setting and under drop down create New 
+	- Takes normal time 3-4 mins to start
+	- Set by Workspace Admin
+	- Concurrency : Mulitple Notebooks /pipeline use same spark (Setting : Workspace > Setting > Data Eng > Concurrency)  
 
-
-
+### Roles:
+1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
+2. Domain Admin -
+   	- Can View only 1 domain
+   	- add Contibutors to his Domain
+   	- Change settings of his domain
+3. Workspace Admin -
+	- Can View and Change only to his workspace 
+   
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
