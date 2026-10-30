@@ -181,7 +181,9 @@ Pre- Req
 	- Takes normal time 3-4 mins to start
 	- Set by Workspace Admin
 	- Concurrency : Mulitple Notebooks /pipeline use same spark (Setting : Workspace > Setting > Data Eng > Concurrency)  
-
+5. ShortCut Caching : Access and store data from external sources S3 , SAP  etc., 
+   - Workspace > Settings > OneLake > Enable cache for shortcuts 
+   
 ### Roles:
 1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
 2. Domain Admin -
