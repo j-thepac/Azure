@@ -428,7 +428,7 @@ What cannot be checked in
     - ManageFields : change column name ,type , new Col , datetime , String and Math operation
 5. Destination:
     - EventHouse : KQL
-    - Lakehouse
+    - Lakehouse (Off by Default) 
     - Stream : Into other stream
     - Activator: alert
 3. Mode: 
@@ -436,8 +436,6 @@ What cannot be checked in
     - Live : Ingest Date
 4. Source >http > https://konkan-railway-api.vercel.app/api/v4/fetchTrains
 5. Real TIme Dashoboard using Maps with Latitude and Longitude
-
-
 
 ### Activity: Custom Python
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
