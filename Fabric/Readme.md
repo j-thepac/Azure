@@ -170,17 +170,64 @@ Pre- Req
 5. All Lakehouse and warehouse are created on same Onelake
 6. Domain = Group of Workspaces
 7. Capacity Level = Compute level kept seperate for Workspace
-8. Principle of least privilage( PolP ) = Min level of access
-9. 
+
+  
+
 ## Roles:
-1. Fabric Admin (Tenant Level) - All access across all Domain (group of Workspaces) Eg: Create , delete domains etc., 
-2. Domain Admin -
-   	- Can View only 1 domain
-   	- add Contibutors to his Domain
-   	- Change settings of his domain
-3. Workspace Admin -
-	- Can View and Change only to his workspace
- - 
+Principle of least privilage( PolP ) = Min level of access
+
+1. Global Admin : All access and all services and all tenants and all users /groups. Create Fabric Admin 
+2. Fabric Admin (Tenant Level) - Fabric scope across all Domain (group of Workspaces) Eg: Create , delete domains etc.,
+3. Capacity Admin : Controls Compute (spark) capacity for each workspace 
+4. Domain : Manage 1 Domain
+   	- Fabric > Settings > Domain > Create Domain and add users
+	- Admin  
+	   	- Can View only 1 domain
+	   	- add Contibutors to his Domain
+	   	- Change settings of his domain
+    -  Contributor 
+6. Workspace Roles
+   	- Workspace > Manage access 
+   	- Admin : Perform All operations of his workspace + Update and delete +Add Memebers
+	- Member :
+ 		- Performs All operation
+   		- Except: Update , Delete Workspace , Add , remove people
+	- Contributor ( Developer)  :
+		- Cannot Update ,Delete Workspace and Add remove people
+	 	- Cannot create and modify DB and Warehouse
+  	 	- Can Read , Create , Write , Edit and run all items 
+       	- Can Make connections 
+ 	- Viewer:
+		- Read Data and Pipleines
+		- Cannot execute 
+		- Cannot make new connections
+7. Item level Security:
+	- Access to Entire Warehosue , Lakehouse , Noteboks
+   	- Workspace > Select Item > ck 3 dots > Manage permissions > Add Users
+   		- Notebook : Share , Edit and Run
+   		- Lakehouse :
+   	 		- Empty Permission : Basic Schema and To give Row , Column , Table level access
+   	     	- Read SQL : Query Tables and See files
+   	      	- Read all Apache Spark : To create ShortCut , Read using Spark Nb , Read raw Files , Read Event 
+   	      	- Build Report : Access to connect to semantic using PBI but no table level access
+   	    - Warehouse:
+   	    	- Empty Permission : Basic Schema and for Row , Column , Table level access
+   	    	- Read all SQl
+   	       	- Read ll Onelake : All SQL + Saprk
+   	       	- Build Report : Same as above
+   	       	- Monitor Queries : Monitor Warehouse
+   	       	- Audit : Audit logs
+   	       	- Share : Reshare with other users
+8. Data Level Security: Individual Data in Lakehosue and Warehouse
+     - User needs to already have access to Warehouse / Lakehouse 
+	 - Lakehouse :
+  		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
+      	- Tables : TSQL Grant Select (row , column and Table (OLS) )
+	 - Data Warehouse : Grant Select (row , column and Table (OLS) )
+9. Masking
+    - ```create table T (nm varchar(10) masked with (function=partial(1,"-",2)') NULL)```
+    - ``` Alter Table T add masked with (function=partial(1,"-",2)');```
+
 ### Workspaces
 1. Spark settings done at workspace
 2. Install spark lib at workspace
@@ -196,29 +243,8 @@ Pre- Req
    - Workspace > Settings > OneLake > Enable cache for shortcuts
    - Keep data only fro 24hour
    - Each file <= 1GB only
-6. Roles in Workspace:
-	- Admin : Perform All operations 
-	- Member : Performs All operation except Update ,Delete Workspace and Add remove people
-	- Contributor [Developer] :
-		- Cannot Update ,Delete Workspace and Add remove people
-	 	- Cannot create and modify DB and Warehouse
-  	 	- Can Read , Create , Write , Edit and run all items 
-       	- Can Make connections 
- 	- Viewer:
-		- Read Data and Pipleines
-		- Cannot execute 
-		- Cannot make new connections
-7. Item level Security: Access to Entire Warehosue , Lakehouse
-   	- Workspace > Select Warehouse > ck 3 dots > Manage permissions > Add Users 
-9. Data Level Security: Individual Data in Lakehosue and Warehouse
-     - User needs to already have access to Warehouse / Lakehouse 
-	 - Lakehouse :
-  		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
-      	- Tables : TSQL Grant Select (row , column and Table (OLS) )
-	 - Data Warehouse : Grant Select (row , column and Table (OLS) )
-10. Masking
-    - ```create table T (nm varchar(10) masked with (function=partial(1,"-",2)') NULL)```
-    - ``` Alter Table T add masked with (function=partial(1,"-",2)');```
+
+
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
