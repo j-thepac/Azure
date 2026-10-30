@@ -178,7 +178,7 @@ Pre- Req
    	- Change settings of his domain
 3. Workspace Admin -
 	- Can View and Change only to his workspace
-
+ - 
 ### Workspaces
 1. Spark settings done at workspace
 2. Install spark lib at workspace
@@ -206,7 +206,14 @@ Pre- Req
 		- Read Data and Pipleines
 		- Cannot execute 
 		- Cannot make new connections
-
+7. Item level Security: Access to Entire Warehosue , Lakehouse
+   	- Workspace > Select Warehouse > ck 3 dots > Manage permissions > Add Users 
+9. Data Level Security: Access to individual Data in Lakehosue and Warehouse
+	 - Lakehouse :
+  		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
+      	- Tables : TSQL Grant Select (row , column and Table (OLS) )
+	 - Data Warehouse : Grant Select (row , column and Table (OLS) )
+   
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
