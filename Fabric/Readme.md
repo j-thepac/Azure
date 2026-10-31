@@ -287,7 +287,7 @@ Principle of least privilage( PolP ) = Min level of access
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
-
+--------------------------------------------------------------------------------------
 ## OneLake 
 
 ### Issues with Data Lake 
@@ -349,9 +349,35 @@ Principle of least privilage( PolP ) = Min level of access
             - Create temporary Copy in Onelake
             - Improve perfromance
             - Profile > Workspace Settings > Onelake > Enable Cache
-
-### Datapipeline
-- Basic Feature :
+         
+###  Data Warehouse
+- Delta Format
+- Can use TSQL / spark / Dataflow Gen2
+- Fabric > New Item > Warehouse
+- new view /  Table /Stored Procedure (View+paramters)
+- Visualization
+-   create schema gold
+    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100));
+    ALTER TABLE gold.E;
+    ADD CONSTRAINT pk;
+    PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;
+- Inserting data Tables:
+    - Pipeline : Dataflow , spark , Copy Activity
+    - copy into
+        - schema should already exist
+        - copy into gold.T From "Onelake/ ABFS path" with(..)
+    - create table as 
+        - create table as gold.T as select * from lakehouse
+        - CREATE TABLE gold.T as select * from openrowset(BULK 'adls.csv',FORMAT = 'CSV',PARSER_VERSION = '2.0',HEADER_ROW = TRUE)
+- View 
+    - Save business logic in the view
+    - add Security
+- Visual Query editor : Dataflow Gen2 UI transformations
+- Notebook > select Tsql > open warehouse
+- Lakehouse 1)File=Bronze
+--------------------------------------------------------------------------------------
+## Orchestration : Datapipeline
+- Datapipeline Basic Feature :
     - parameters : Set before pipeline 
     - variables : Set at run time  
     - add run time dynamic content : to use parameters , variables , functions etc in the field
@@ -363,7 +389,7 @@ Principle of least privilage( PolP ) = Min level of access
   		- Move and Transform : Copy , Dataflow , Delete Data , Invoke SSIS
   	   	- Metadata : Lookup and Get Metadata
   	   	- Control flow: If , Switch , Filter , Wait , Foreach, Until , Set Variable , Append Variable , Fail
-  	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functtions , HD insight , Batch , Refresh SQL
+  	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functions , HD insight , Batch (cmd prompt), Refresh SQL
   	   	- Notification : Teams , Office Email , Outlook
   	   	- Transform : Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
   	   	- Lakehouse : Lakehouse Maintenence (run vaccum ) , Refresh Materialized view 
@@ -410,44 +436,24 @@ Principle of least privilage( PolP ) = Min level of access
 - Environment (Install Custom library)
     - New Item > Environment > Configure and Save
     - Notebook > select Env or Open Workspace > Workspace Setting >DE >select Env
-
+- Can also parallel notebooks in same session .
+  ```from notebookutils import notebook 
+  notebook.runmultiple(['n1','n2'])```
+  
 ### Schedule : 
-1. Using Pipleine 
-2. Home>Rt click Item> Schedule
+1. Workspace > select item > click on 3 dots  >  Schedule triggers
+2. There is also Event Based Triggers (Real Time Hub)
+3. PBI to detech semantoic model changes: Semantic > 3 dots > settings > Refresh
 
-## Data Warehouse
-- Delta Format
-- Can use TSQL / spark / Dataflow Gen2
-- Fabric > New Item > Warehouse
-- new view /  Table /Stored Procedure (View+paramters)
-- Visualization
--   create schema gold
-    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100));
-    ALTER TABLE gold.E;
-    ADD CONSTRAINT pk;
-    PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;
-- Inserting data Tables:
-    - Pipeline : Dataflow , spark , Copy Activity
-    - copy into
-        - schema should already exist
-        - copy into gold.T From "Onelake/ ABFS path" with(..)
-    - create table as 
-        - create table as gold.T as select * from lakehouse
-        - CREATE TABLE gold.T as select * from openrowset(BULK 'adls.csv',FORMAT = 'CSV',PARSER_VERSION = '2.0',HEADER_ROW = TRUE)
-- View 
-    - Save business logic in the view
-    - add Security
-- Visual Query editor : Dataflow Gen2 UI transformations
-- Notebook > select Tsql > open warehouse
-- Lakehouse 1)File=Bronze
-
+## Monitoring
+--------------------------------------------------------------------------------------
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
 - Warehouse/Lakehouse > Semantic Model > PBI
 - Can be saved to Onelake : Workspace>rt ck Semantic Model > OneLake Integration
 
-### Triggers
-### Monitoring
+
+
 
 ## CI CD
 ### CI / Git
