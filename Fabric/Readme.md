@@ -258,11 +258,10 @@ Principle of least privilage( PolP ) = Min level of access
    - Only Fabric Admin can create Tags
    - User :  Item > 3 dots > Settings > Tags
    - Used for Filtering items
-
+   - Any number of tags can be applied to same item 
 5. Item Sensitivity Label :
    - Created in Fabric Purview , once created goto Admin Portal > search for "Sensitivity"
    - Fabric Admin enables in Admin Portal
-   - 
 6. Workspace Lineage :
    - Shows Data flow
    - Workspace:  Workspace > at the top Ck on Lineage View
