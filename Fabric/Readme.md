@@ -358,6 +358,15 @@ Principle of least privilage( PolP ) = Min level of access
     - Concurrency
 
 - Pipelines
+  	- Workflow > New Item >Pipeline
+  	- Types :
+  		- Move and Transform : Copy , Dataflow , Delete Data , Invoke SSIS
+  	   	- Metadata : Lookup and Get Metadata
+  	   	- Control flow: If , Switch , Filter , Wait , Foreach, Until , Set Variable , Append Variable , Fail
+  	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functtions , HD insight , Batch , Refresh SQL
+  	   	- Notification : Teams , Office Email , Outlook
+  	   	- Transform : Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
+  	   	- Lakehouse : Lakehouse Maintenence (run vaccum ) , Refresh Materialized view 
     - Activities (Activites Tab > click on 3 dots) :
         - Copy Data : handle Faulty row and modify schema 
         - Delete : Delete Files
@@ -372,6 +381,7 @@ Principle of least privilage( PolP ) = Min level of access
         - Lookup : Fetch Data from Table / File /Sproce
         - Wait (Dummy)
         - parameters : Used to make pipeline Dynamic
+        - Sparkjob , Noteboo k , Script ,Stored Procedure , KQL , Inoke Pipeline , Semantic model Refresh 
     - Schedule: Pipeline > Schdeule
     - Monitor: 1) Pipleine Line > Run 2)Home > Monitor
 
@@ -393,6 +403,7 @@ Principle of least privilage( PolP ) = Min level of access
 - Run : Home > refresh
 
 ### Spark 
+- Notebook 
 - Start pool: Always on
 - Custom Pool: Takes time to spin up
 - notebookutils.help
