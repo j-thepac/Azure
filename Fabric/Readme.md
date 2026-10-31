@@ -180,15 +180,15 @@ Principle of least privilage( PolP ) = Min level of access
 	- Controls Compute (spark) capacity for each workspace
  	- Cannot access other things
 	- Fabric > Settings >Capacity > 
-5. Domain : Manage 1 Domain
+4. Domain : Manage 1 Domain
    	- Fabric > Settings > Domain > Create Domain and add users
 	- Domain Admin  
 	   	- Can View only 1 domain
 	   	- add Contibutors to his Domain
 	   	- Change settings of his domain
     - Domain Contributor
-    -  
-6. Workspace Roles
+    -  There is Domain Member and Viewer
+5. Workspace Roles
    	- Workspace > Manage access 
    	- Admin : Perform All operations of his workspace + Update and delete +Add Memebers
 	- Member :
@@ -203,7 +203,7 @@ Principle of least privilage( PolP ) = Min level of access
 		- Read Data and Pipleines
 		- Cannot execute 
 		- Cannot make new connections
-7. Item level Security:
+6. Item level Security:
 	- Access to Entire Warehosue , Lakehouse , Noteboks
    	- Workspace > Select Item > ck 3 dots > Manage permissions > Add Users
    		- Notebook : Share , Edit and Run
@@ -220,17 +220,55 @@ Principle of least privilage( PolP ) = Min level of access
    	       	- Monitor Queries : Monitor Warehouse
    	       	- Audit : Audit logs
    	       	- Share : Reshare with other users
-8. Data Level Security: Individual Data in Lakehosue and Warehouse
+7. Data Level Security: Individual Data in Lakehosue and Warehouse
      - User needs to already have access to Warehouse / Lakehouse 
 	 - Lakehouse :
   		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
       	- Tables :  GRANT SELECT (row , column and Table  ) , REVOKE, DENY
 	 - Data Warehouse : GRANT SELECT (row , column and Table )
-9. Masking
-    - ```create table T (nm varchar(10) masked with (function=partial(1,"-",2)') NULL)```
-    - ``` Alter Table T add masked with (function=partial(1,"-",2)');```
+8. Masking :
+    - Underlying data is masked but not altered
+    - But data can be guessed using between and like operators . 
+    - fx : default() , email() , random(start,end) --used for numbers, partial(prefix,padding,suffix) 
+    - ```create table T (nm varchar(10) masked with (function='fx') NULL)```
+    - ``` Alter Table T add masked with (function='fx');```
+    - Eg: Alter Table T add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
+   
 
-### Workspaces
+## Data Governance  : 
+1. Labelling data
+2. Types : Endorsement , Tagging , 
+3. Endorsement :
+   - Admin : Admin Portal > Search for " Certification" > Enable 
+   - User :  Item > 3 dots > Settings > Endorsement
+   - None
+   - Promoted :
+   		- Any one with write permission can apply this label
+       	- Applied to all items 
+   - Certified :
+   		- Only selected users by Fabric Admin can apply this .
+     	- Show data is ready for use across org
+     	- Applied to all items
+     	- Once Certitifed the item appears across all workspaces but data not accesiible yet
+   - Master Data :
+   		- Only selected users by Fabric Admin can apply this .
+     	- Show data is single source of truth
+4. Tagging :
+   - Admin : Admin Portal > Tags
+   - Only Fabric Admin can create Tags
+   - User :  Item > 3 dots > Settings > Tags
+   - Used for Filtering items
+
+5. Item Sensitivity Label :
+   - Created in Fabric Purview , once created goto Admin Portal > search for "Sensitivity"
+   - Fabric Admin enables in Admin Portal
+   - 
+6. Workspace Lineage :
+   - Shows Data flow
+   - Workspace:  Workspace > at the top Ck on Lineage View
+   - Item level: Item Lineage > Item > Rt Ck > Lineage View
+   
+## Workspaces
 1. Spark settings done at workspace
 2. Install spark lib at workspace
 3. Default Spark:
