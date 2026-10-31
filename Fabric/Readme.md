@@ -161,7 +161,8 @@ Pre- Req
 2. Workspaces > Deployment Pipelines > New pipeline > Keep only 2 ie., Dev > Prod > Create
 3. Select each item in Pipeline and assign correct workspace
 4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
-----------------------------------
+
+--------------------------------------------------------------------------------------
 ## Basics
 1. Tenant is Company /Org
 2. There is always 1 tenant
@@ -289,7 +290,10 @@ Principle of least privilage( PolP ) = Min level of access
 - Azure >open service > Security > Access Key 
 --------------------------------------------------------------------------------------
 ## OneLake 
-
+1. Lakehouse
+2. Warehouse
+3. Eventhouse
+   
 ### Issues with Data Lake 
 - multiple Data Lake Exists across Teams 
 - Data Duplication
@@ -375,15 +379,23 @@ Principle of least privilage( PolP ) = Min level of access
 - Visual Query editor : Dataflow Gen2 UI transformations
 - Notebook > select Tsql > open warehouse
 - Lakehouse 1)File=Bronze
+
+### EventHouses
+- KQL
 --------------------------------------------------------------------------------------
-## Orchestration : Datapipeline
-- Datapipeline Basic Feature :
+## Orchestration : 
+1. Pipeline
+2. Spark
+3. Dataflow
+4. TSQL
+
+### Pipeline : 
+- Orchestrate all items in Workspace
+-  Features :
     - parameters : Set before pipeline 
     - variables : Set at run time  
     - add run time dynamic content : to use parameters , variables , functions etc in the field
     - Concurrency
-
-- Pipelines
   	- Workflow > New Item >Pipeline
   	- Types :
   		- Move and Transform : Copy , Dataflow , Delete Data , Invoke SSIS
