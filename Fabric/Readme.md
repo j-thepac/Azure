@@ -130,6 +130,10 @@ Pre- Req
 	- Visible x and Y axis 
 	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
 	- Wholenumber
+4. Line and stacked Bar chart :
+	- To show profit as line and sales as stacked over years
+	- Use format painter to copy formatting
+5. Quarterwise sales in Pie chart
 
 ### Activity 3: BikeShare 
 - Design : Src > EventStream > A. Destination (Save Original)
