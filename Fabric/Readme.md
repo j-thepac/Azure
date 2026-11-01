@@ -114,16 +114,19 @@ Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
 
 ### Activity2 : Create PBI Dashboard
 Pre- Req
-- Install PBI desktop 
+- Install PBI desktop
+- login to Fabric
 - Import semantic model in PBI
+- open PBI > Get Date > Open Semantic Model
+- Tab > Modelling > Make Changes to model ( to add new Column)
 
 1. Setup Canvas
 	- Set BG 
-	- Set Header (TextBox > header)
+	- Set Title (TextBox > header)
 2. Card Total Sales 
 	- Visual >Callout>Value> font size
 	- Visual > General > add Title
-3. Bar graph Sales growth 
+3. Bar graph Sales growth
 	- Visible x and Y axis 
 	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
 	- Wholenumber
@@ -481,8 +484,7 @@ What cannot be checked in
 ## PBI
 1. semantic Model created in Fabric cannot be edited in PBI
 2. Measure = Aggregration ,  Column = WithColumn
-3. PBI
-   - PBI service : To share dashboard 
+3. PBI service needed To share dashboard 
 4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
 5. Fabric > Settings > Developer Settings > Enable PBI
 6. DAX = Excel Formula Eg:YEAR(FactOrders[ShipDate])
