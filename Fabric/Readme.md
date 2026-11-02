@@ -44,13 +44,13 @@ Src > LakeHouse(Files) > Lakehouse(Delta) > Warehouse(SQL)
 	- Write into Lakehouse as Pyspark Delta
 7. Transform:
 	- TSQL
-	- Add dataitems > DataCatalog> Lakehouse
-	- verify Data using inspect: Select * from Lakehouse.schema.Table
+	- Add dataitems > DataCatalog> 
+	- verify Data using inspect: Select * from .schema.Table
 	- create schema GlobalSuperstore
 	- ```  drop table if exists GlobalSuperstore.DimCustomer;
 		create Table GlobalSuperstore.DimCustomer as
 		select row_number() over (order by CustomerID) as CustKey,*,1 as Active
-		from Lakehouse.GlobalSuperStore.Customer```
+		from .GlobalSuperStore.Customer```
 	- Wait for few min to reflect
 	- Create Fact and Dim (code below)
 		- DimCustomer
@@ -338,6 +338,10 @@ Principle of least privilage( PolP ) = Min level of access
         - User run SQL on Tables
         - User can share SQL endpoints of Delta Tables
         - Silver
+        - Vorder : Increase read speed but decrease write speed
+          - spark.conf.set("spark.sql.parquet.vorder.enabled", true)
+          - ddf.options("parquet.vorder.default":"true")
+          - %%sql  SET spark.sql.parquet.vorder.enabled=TRUE
         - table > 3 dots > maintenance 1)optimize size and Vorder 2) Vaccum +days 3) ddf.delete() will do softdelete
 
 - File to table (delta) :
