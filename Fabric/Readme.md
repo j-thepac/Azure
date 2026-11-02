@@ -472,7 +472,18 @@ Principle of least privilage( PolP ) = Min level of access
 3. PBI to detech semantoic model changes: Semantic > 3 dots > settings > Refresh
 
 ## Monitoring
---------------------------------------------------------------------------------------
+1. Monitoring Hub :  Workspace > Monitor 
+2. Capcaity Metric App :
+   - Capacity Consumption at workspace
+   - Install Capacity Metric app (app store )
+   - App > Open Compute Tab
+   - Parts :
+   	- Throttling (reject because capacity overloaded)
+   	- Overages : Consume more capacity  
+   	- System Events(Background events affecting capcity
+   
+3. Item Details : Item Level 
+
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
 - Warehouse/Lakehouse > Semantic Model > PBI
