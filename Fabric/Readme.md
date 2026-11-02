@@ -366,10 +366,9 @@ Principle of least privilage( PolP ) = Min level of access
 - Fabric > New Item > Warehouse
 - new view /  Table /Stored Procedure (View+paramters)
 - Visualization
--   create schema gold
-    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100));
-    ALTER TABLE gold.E;
-    ADD CONSTRAINT pk;
+- create schema gold;  
+    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
+    ALTER TABLE gold.E ADD CONSTRAINT pk
     PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;
 - Inserting data Tables:
     - Pipeline : Dataflow , spark , Copy Activity
@@ -385,6 +384,7 @@ Principle of least privilage( PolP ) = Min level of access
 - Visual Query editor : Dataflow Gen2 UI transformations
 - Notebook > select Tsql > open warehouse
 - Lakehouse 1)File=Bronze
+
 
 ### EventHouses
 - KQL
