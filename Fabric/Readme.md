@@ -338,7 +338,7 @@ Principle of least privilage( PolP ) = Min level of access
         - User run SQL on Tables
         - User can share SQL endpoints of Delta Tables
         - Silver
-        - table > 3 dots > maintenance 1)Vorder 2) Vaccum +days 3) ddf.delete() will do softdelete
+        - table > 3 dots > maintenance 1)optimize size and Vorder 2) Vaccum +days 3) ddf.delete() will do softdelete
 
 - File to table (delta) :
     - Any file (csv) can be converted to Delta Tables by "rtclick > load table.
