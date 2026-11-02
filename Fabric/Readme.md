@@ -367,9 +367,9 @@ Principle of least privilage( PolP ) = Min level of access
 - new view /  Table /Stored Procedure (View+paramters)
 - Visualization
 - create schema gold;  
-    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
+   ``` CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
     ALTER TABLE gold.E ADD CONSTRAINT pk
-    PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;
+    PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;```
 - Inserting data Tables:
     - Pipeline : Dataflow , spark , Copy Activity
     - copy into
