@@ -168,7 +168,7 @@ Pre- Req
 2. Workspaces > Deployment Pipelines > New pipeline > Keep only 2 ie., Dev > Prod > Create
 3. Select each item in Pipeline and assign correct workspace
 4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
-
+5. Warehouse shows schema to Git but not Lakehouse .
 --------------------------------------------------------------------------------------
 ## Basics
 1. Tenant is Company /Org
@@ -388,6 +388,8 @@ Principle of least privilage( PolP ) = Min level of access
 
 ### EventHouses
 - KQL
+- TimeSeries Data
+- Real Time analysis , Geo Spatial 
 --------------------------------------------------------------------------------------
 ## Orchestration : 
 1. Pipeline
