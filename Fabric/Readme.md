@@ -65,7 +65,6 @@ Src > LakeHouse(Files) > Lakehouse(Delta) > Warehouse(SQL)
 	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
 	- repeat for all Dims 
 
-
 ``` 
 Fact and Dim 
 create schema GlobalSuperstore ;
@@ -126,7 +125,7 @@ Pre- Req
 2. Card Total Sales and Total profit
 	- Visual >Callout>Value> font size
 	- Visual > General > add Title
-	- Make Total profit static
+	- Make Total profit static (Format Edit interaction )
 3. Bar graph Sales growth
 	- Visible x and Y axis 
 	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
@@ -243,7 +242,6 @@ Principle of least privilage( PolP ) = Min level of access
     - ``` Alter Table T add masked with (function='fx');```
     - Eg: Alter Table T add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
    
-
 ## Data Governance  : 
 1. Labelling data
 2. Types : Endorsement , Tagging , 
