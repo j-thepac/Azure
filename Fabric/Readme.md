@@ -294,7 +294,6 @@ Principle of least privilage( PolP ) = Min level of access
    - Keep data only fro 24hour
    - Each file <= 1GB only
 
-
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
@@ -389,7 +388,6 @@ Principle of least privilage( PolP ) = Min level of access
 - Notebook > select Tsql > open warehouse
 - Lakehouse 1)File=Bronze
 
-
 ### EventHouses
 - KQL
 - TimeSeries Data
@@ -466,7 +464,8 @@ Principle of least privilage( PolP ) = Min level of access
   notebook.runmultiple(['n1','n2'])```
 - ```%%sql
   create table T(id Int) -- create table in lakehouse 
-  ``` 
+  ```
+- ``` deltatable.createOrReplace(spark).tableName("T").addColumns(schema).execute() #create table and scheam```
 ### Schedule : 
 1. Workspace > select item > click on 3 dots  >  Schedule triggers
 2. There is also Event Based Triggers (Real Time Hub)
