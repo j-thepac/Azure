@@ -464,7 +464,9 @@ Principle of least privilage( PolP ) = Min level of access
 - Can also parallel notebooks in same session .
   ```from notebookutils import notebook 
   notebook.runmultiple(['n1','n2'])```
-  
+- ```%%sql
+  create table T(id Int) -- create table in lakehouse 
+  ``` 
 ### Schedule : 
 1. Workspace > select item > click on 3 dots  >  Schedule triggers
 2. There is also Event Based Triggers (Real Time Hub)
