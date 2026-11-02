@@ -483,10 +483,15 @@ Principle of least privilage( PolP ) = Min level of access
    	- Throttling (reject because capacity overloaded)
    	- Overages : Consume more capacity  
    	- System Events(Background events affecting capcity
-   
-4. Item Details :
-   - Spark UI
-   - 
+4. Event Streaming > Runtime Logs
+5. Warehouse > QUeryInsights
+	- Capacity Metric App
+	- Warehouse > Editor > Monitor
+	- Vorder :
+ 		- Makes read fast but write slow (Useful for OLAP)
+     	- On by Default .To off -- ALter database current set voder =off;
+        - Enabled at Workspace level
+          
 
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
