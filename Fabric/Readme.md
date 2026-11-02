@@ -489,7 +489,13 @@ Principle of least privilage( PolP ) = Min level of access
    	- Overages : Consume more capacity  
    	- System Events(Background events affecting capcity
 4. Event Streaming > Runtime Logs
-5. Warehouse > QUeryInsights
+   - Types of Logs 
+	   - Command Logs
+	   - Data Operation Logs
+	   - Ingestion results logs
+	   - Metrics
+	   - Query Logs 
+6. Warehouse > QUeryInsights
 	- Capacity Metric App
 	- Warehouse > Editor > Monitor
 	- Vorder :
@@ -497,11 +503,12 @@ Principle of least privilage( PolP ) = Min level of access
      	- On by Default .To off -- ALter database current set voder =off;
         - Enabled at Workspace level
           
-
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
 - Warehouse/Lakehouse > Semantic Model > PBI
 - Can be saved to Onelake : Workspace>rt ck Semantic Model > OneLake Integration
+- Refresh : workspace > select Semantic Model > 3 dots > Settings > Refresh
+- Monitored in Monitor Hub 
 
 ## CI CD
 ### CI / Git
@@ -512,7 +519,6 @@ What cannot be checked in
 - Lakehouse tables
 - Warehouse schema only
 
-
 ------------------------------
 ## PBI
 1. semantic Model created in Fabric cannot be edited in PBI
@@ -521,8 +527,7 @@ What cannot be checked in
 4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
 5. Fabric > Settings > Developer Settings > Enable PBI
 6. DAX = Excel Formula Eg:YEAR(FactOrders[ShipDate])
-
-
+   
 ### Views on the left side
   - report View : UI chnages
   - Table View : Data changes
@@ -595,7 +600,12 @@ What cannot be checked in
     - Live : Ingest Date
 4. Source >http > https://konkan-railway-api.vercel.app/api/v4/fetchTrains
 5. Real TIme Dashoboard using Maps with Latitude and Longitude
-
+6. Optimization KQL :
+   - filter first eg :```t
+     					|where Name has "azure"```
+   - use less columns
+   - Use 'has' instead of 'contains'(slower) . has_cs(better) case sensitive
+   
 ### Activity: Custom Python
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
 2. Workspace > EventStream "test" > Create >
