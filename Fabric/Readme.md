@@ -473,9 +473,6 @@ Principle of least privilage( PolP ) = Min level of access
 - Warehouse/Lakehouse > Semantic Model > PBI
 - Can be saved to Onelake : Workspace>rt ck Semantic Model > OneLake Integration
 
-
-
-
 ## CI CD
 ### CI / Git
 What cannot be checked in
@@ -623,4 +620,10 @@ table_name
 |where c=id}  --f(1)
 
 -- practise window functions
--- 
+--
+```
+## Others
+1. Mirror
+   - Workspace > New Item > Search "mirror"
+   - Make replicate of Datasources : Add Db , SAP , Catalog  , etc., 
+   - To make 
