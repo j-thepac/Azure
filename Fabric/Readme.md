@@ -404,15 +404,16 @@ Principle of least privilage( PolP ) = Min level of access
     - Concurrency
   	- Workflow > New Item >Pipeline
   	- Types :
-  		- Move and Transform : Copy , Dataflow , Delete Data , Invoke SSIS
+  		- Move and Transform :
+    		- Copy , Delete Data , Invoke SSIS
+      		- Dataflow ,Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
   	   	- Metadata : Lookup and Get Metadata
   	   	- Control flow: If , Switch , Filter , Wait , Foreach, Until , Set Variable , Append Variable , Fail
   	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functions , HD insight , Batch (cmd prompt), Refresh SQL
   	   	- Notification : Teams , Office Email , Outlook
-  	   	- Transform : Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
   	   	- Lakehouse : Lakehouse Maintenence (run vaccum ) , Refresh Materialized view 
     - Activities (Activites Tab > click on 3 dots) :
-        - Copy Data : handle Faulty row and modify schema 
+        - Copy Data : Can handle Faulty row and also modify schema 
         - Delete : Delete Files
         - metadata (of files and folder) / Lookup(contents file/ table/sproc)
             1. One Item 
