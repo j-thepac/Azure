@@ -76,6 +76,10 @@ drop table if exists GlobalSuperstore.FactOrders;
 create Table GlobalSuperstore.DimCustomer as
 select row_number() over (order by CustomerID) as CustKey,*,1 as Active
 from Lakehouse.GlobalSuperStore.Customer;
+
+-- declare @max_skey int
+-- set  @max_skey = select max(skey) from T
+-- insert into t select *,@max_skey+row_number() over ...
 ----
 create Table GlobalSuperstore.DimGeo as
 SELECT 
