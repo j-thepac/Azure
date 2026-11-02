@@ -123,9 +123,10 @@ Pre- Req
 1. Setup Canvas
 	- Set BG 
 	- Set Title (TextBox > header)
-2. Card Total Sales 
+2. Card Total Sales and Total profit
 	- Visual >Callout>Value> font size
 	- Visual > General > add Title
+	- Make Total profit static
 3. Bar graph Sales growth
 	- Visible x and Y axis 
 	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
@@ -134,7 +135,7 @@ Pre- Req
 	- To show profit as line and sales as stacked over years
 	- Use format painter to copy formatting
 5. Quarterwise sales in Pie chart
-
+6. add slicer chart for Country
 ### Activity 3: BikeShare 
 - Design : Src > EventStream > A. Destination (Save Original)
   									 > B. Transformation > Filter > Destination
