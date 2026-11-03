@@ -132,13 +132,22 @@ Pre- Req
 	- Make Total profit static (Format Edit interaction )
 3. Bar graph Sales growth
 	- Visible x and Y axis 
-	- ship_year = YEAR(FactOrders[ShipDate]) #DAX= Excel Formula
+	- ship_year = YEAR(FactOrders[ShipDate]) **#DAX= Excel Formula**
 	- Wholenumber
-4. Line and stacked Bar chart :
+4.** Line and stacked Bar chart** :
 	- To show profit as line and sales as stacked over years
 	- Use format painter to copy formatting
-5. Quarterwise sales in Pie chart
-6. add slicer chart for Country
+5. Quarterwise sales in **Pie chart**
+6. add **slicer** chart for Country :
+   - Use slicer to see metrics for different countries
+   - Multi Select
+8. Add** Reset button** to reset slicer values
+9. Add **KPI** to show target : TargetSales(Measure=5 mill) ,Total Sales , Year
+   - TargetSales(Measure=5 mill) ,Total Sales , Year
+   - Click on each year to see changes
+10. How far from our target using **Guage** : Sales Vs Target (measure)
+
+
 ### Activity 3: BikeShare 
 - Design : Src > EventStream > A. Destination (Save Original)
   									 > B. Transformation > Filter > Destination
