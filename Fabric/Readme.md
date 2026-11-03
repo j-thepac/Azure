@@ -182,7 +182,7 @@ Pre- Req
 3. Select each item in Pipeline and assign correct workspace
 4. Click on Prod Pipeline Workspace > Select staged item and click on Deploy
 5. Warehouse shows schema to Git but not Lakehouse .
---------------------------------------------------------------------------------------
+-------------------------------------------------------
 ## Basics
 1. Tenant is Company /Org
 2. There is always 1 tenant
@@ -193,28 +193,31 @@ Pre- Req
 7. Capacity Level = Compute level kept seperate for Workspace
 
 ## Roles:
-Principle of least privilage( PolP ) = Min level of access
 
-1. Global Admin : All access and all services and all tenants and all users /groups. Create Fabric Admin 
-2. Fabric Admin (Tenant Level) - Fabric scope across all Domain (group of Workspaces) Eg: Create , delete domains etc.,
+1. Principle of least privilage( PolP ) = Min level of access
+2. Global Admin : 
+    - All access and all services and all tenants 
+    - Create  all users /groups.
+    - Create Fabric Admin 
+2. Fabric Admin (Tenant Level) - 
+    - Complete Fabric Access across all Domain 
+    - Eg: Create , delete domains etc.,
 3. Capacity Admin :
 	- Controls Compute (spark) capacity for each workspace
  	- Cannot access other things
-	- Fabric > Settings >Capacity > 
-4. Domain : Manage 1 Domain
-   	- Fabric > Settings > Domain > Create Domain and add users
+	- Fabric > Settings > Admin Portal > Capacity > 
+4. Domain : Group of Workspaces
+   	- Fabric > Settings > Admin Portal > Domain > Create Domain &  users
 	- Domain Admin  
 	   	- Can View only 1 domain
 	   	- add Contibutors to his Domain
 	   	- Change settings of his domain
     - Domain Contributor
-    -  There is Domain Member and Viewer
+    -  There is **NO** Domain Member and Viewer
 5. Workspace Roles
-   	- Workspace > Manage access 
-   	- Admin : Perform All operations of his workspace + Update and delete +Add Memebers
-	- Member :
- 		- Performs All operation
-   		- Except: Update , Delete Workspace , Add , remove people
+   	- Workspace > Manage access > Add 
+   	- Admin : Perform All operations
+	- Member : Cannot Update , Delete Workspace , Add , remove people
 	- Contributor ( Developer)  :
 		- Cannot Update ,Delete Workspace and Add remove people
 	 	- Cannot create and modify DB and Warehouse
@@ -225,54 +228,69 @@ Principle of least privilage( PolP ) = Min level of access
 		- Cannot execute 
 		- Cannot make new connections
 6. Item level Security:
-	- Access to Entire Warehosue , Lakehouse , Noteboks
+	- Access to Entire Warehosue , Lakehouse , Notebooks
    	- Workspace > Select Item > ck 3 dots > Manage permissions > Add Users
-   		- Notebook : Share , Edit and Run
+   		- Notebook : 
+            - Read 
+            - Share (Reshare) :Permission to Share
+            - Edit :
+            - Run (Execute) 
    		- Lakehouse :
-   	 		- Empty Permission : Basic Schema and To give Row , Column , Table level access
+   	 		- Empty Permission : For give Row, Column ,Table level access
    	     	- Read SQL : Query Tables and See files
-   	      	- Read all Apache Spark : To create ShortCut , Read using Spark Nb , Read raw Files , Read Event 
-   	      	- Build Report : Access to connect to semantic using PBI but no table level access
+   	      	- Read all Apache Spark : 
+                - To create ShortCut 
+                - Read using Spark Nb , Read raw Files , Read Event 
+   	      	- Build Report : 
+                - Access to connect to semantic using PBI 
+                - but no table level access
    	    - Warehouse:
-   	    	- Empty Permission : Basic Schema and for Row , Column , Table level access
-   	    	- Read all SQl
-   	       	- Read ll Onelake : All SQL + Saprk
-   	       	- Build Report : Same as above
+   	    	- Empty Permission : For Row , Column , Table level access
+   	    	- Read all data using SQL
+   	       	- Read all Onelake data : All SQL + Saprk
    	       	- Monitor Queries : Monitor Warehouse
    	       	- Audit : Audit logs
-   	       	- Share : Reshare with other users
+   	       	- Share : Share granted permission with others 
+
 7. Data Level Security: Individual Data in Lakehosue and Warehouse
-     - User needs to already have access to Warehouse / Lakehouse 
-	 - Lakehouse :
-  		- Files and Tables : Open Lakehouse > LakeHouse security > Select Files and Tables > Assign uers
-      	- Tables :  GRANT SELECT (row , column and Table  ) , REVOKE, DENY
-	 - Data Warehouse : GRANT SELECT (row , column and Table )
+    - Role Based Access (RBAC) :
+        - Lakehouse >Top Onelake Security > Create Role - Read / ReadWrite
+        - Select Data : File and Tables 
+        - add Members 
+    - SQL Access 
+        - User needs to already have access to Warehouse / Lakehouse 
+        - Lakehouse Tables , Warehouse
+        - GRANT SELECT (row , column and Table  ) , REVOKE, DENY
+
 8. Masking :
     - Underlying data is masked but not altered
     - But data can be guessed using between and like operators . 
-    - fx : default() , email() , random(start,end) --used for numbers, partial(prefix,padding,suffix) 
+
     - ```create table T (nm varchar(10) masked with (function='fx') NULL)```
     - ``` Alter Table T add masked with (function='fx');```
-    - Eg: Alter Table T add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
+    -  Alter Table T add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
+    - Types : 
+        - default() 
+        - email() 
+        - random(start,end) --used for numbers
+        -  partial(prefix,padding,suffix) 
    
 ## Data Governance  : 
 1. Labelling data
 2. Types : Endorsement , Tagging , 
 3. Endorsement :
    - Admin : Admin Portal > Search for " Certification" > Enable 
+   - Any Item
    - User :  Item > 3 dots > Settings > Endorsement
-   - None
-   - Promoted :
-   		- Any one with write permission can apply this label
-       	- Applied to all items 
-   - Certified :
-   		- Only selected users by Fabric Admin can apply this .
-     	- Show data is ready for use across org
-     	- Applied to all items
-     	- Once Certitifed the item appears across all workspaces but data not accesiible yet
-   - Master Data :
-   		- Only selected users by Fabric Admin can apply this .
-     	- Show data is single source of truth
+   - Types :
+        - None
+        - Promoted : Any one with write permission can apply this label
+        - Certified :
+   		    - Only selected users by Fabric Admin can apply this .
+            - Item appears across all workspaces but data not accesiible yet
+        - Master Data :
+            - Only selected users by Fabric Admin can apply this .
+            - Show data is single source of truth
 4. Tagging :
    - Admin : Admin Portal > Tags
    - Only Fabric Admin can create Tags
@@ -287,21 +305,9 @@ Principle of least privilage( PolP ) = Min level of access
    - Workspace:  Workspace > at the top Ck on Lineage View
    - Item level: Item Lineage > Item > Rt Ck > Lineage View
    
-## Workspaces
-1. Spark settings done at workspace
-2. Install spark lib at workspace
-3. Default Spark:
-	- Always running
-	- start immediately (if no customization is applied)
-4. Custom Spark:
-	- Setting : Workspace > Setting > Data Eng > Env > Set Default Setting and under drop down create New 
-	- Takes normal time 3-4 mins to start
-	- Set by Workspace Admin
-	- Concurrency : Mulitple Notebooks /pipeline use same spark (Setting : Workspace > Setting > Data Eng > Concurrency)  
-5. ShortCut Caching : Access and store data from external sources S3 , SAP  etc., 
-   - Workspace > Settings > OneLake > Enable cache for shortcuts
-   - Keep data only fro 24hour
-   - Each file <= 1GB only
+
+ 
+
 
 ## Create Account Key 
 - Once resource is created 
@@ -319,7 +325,7 @@ Principle of least privilage( PolP ) = Min level of access
 
 **Intro**
 - Built on Data Lake Gen2
-- One Single for 1 Tenant /  Company  
+- 1 One Lake for 1 Tenant /  Company  
 - One Lake can be accessed from Windows directly like Onedrive and can view all items like Db , lakeshouse , notebooks etc., 
 - python to access onelake from local system - https://learn.microsoft.com/en-us/fabric/onelake/onelake-access-python
     - Make sure az is installed 
@@ -329,78 +335,78 @@ Principle of least privilage( PolP ) = Min level of access
 ### LakeHouse = Datalake (Files) + Warehouse (Tables)
 - Created on Onelake 
 - Onelake = n x LakeHouse
-- ShortCut:
-	- Can have shortcut pointing to : Other Onelake , Gen2 , S3 , Dataverse etc.,
-	- Goto LakeHouse > Files >Ck 3 dots > Shortcut
-   	- Avoid Data Duplication
-   	- Can be used in Spark 
-- 2 types:
-    - Files
+- Shortcut in Files and Tables
+    - For Lakehouse Folder and DB
+    - Avoid Data Duplications
+    - Collaboration
+    - Single Source of truth
+    - ShortCut Types 
+        - Internal :
+            - To work , Source and target needs to be located in same region
+        	- Can have shortcut pointing to : Other Onelake , Gen2 , S3 , Dataverse etc.,
+	        - Goto LakeHouse > Files >Ck 3 dots > Shortcut
+        	- Avoid Data Duplication
+   	        - Can be used in Spark 
+        - External: 
+            -  Access and store data from external sources S3 , SAP  etc., 
+            - Workspace > Settings > OneLake > Enable cache for shortcuts
+            - Keep data only fro 24hour
+            - Each file <= 1GB only
+            - Create temporary Copy in Onelake
+            - Improve perfromance
+            - Profile > Workspace Settings > Onelake > Enable Cache
+
+- Types:
+    - Files ( Bronze ):
         - Files and Folders
         - Structure , Unstructured and Semi Structured
         - abfs path (spark compatible )
         - Bronze
-    - Tables: 
+    - Tables (Silver) :
         - Delta Tables
         - Versioning 
         - Schema Evaluation
         - User run SQL on Tables
         - User can share SQL endpoints of Delta Tables
-        - Silver
         - Vorder : Increase read speed but decrease write speed
           - spark.conf.set("spark.sql.parquet.vorder.enabled", true)
           - ddf.options("parquet.vorder.default":"true")
           - %%sql  SET spark.sql.parquet.vorder.enabled=TRUE
         - table > 3 dots > maintenance 1)optimize size and Vorder 2) Vaccum +days 3) ddf.delete() will do softdelete
 
-- File to table (delta) :
-    - Any file (csv) can be converted to Delta Tables by "rtclick > load table.
-    - Using Notebook 
-        - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
-        - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
-        - df.write.format("delta").mode("overwrite").options(path="abfss://<path>/Tables/<schema>/<table>/")
-    c. Datafactory
+- File to table (delta) : Any file (csv) can be converted to Delta Tables by "rtclick > load table.
+- Using Notebook 
+    - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
+    - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
+    - df.write.format("delta").mode("overwrite").options(path="abfss://<path>/Tables/<schema>/<table>/")
 
-- Shortcut in Files and Tables
-    - For Lakehouse Folder and DB
-    - To access file and Tables across multiple workspaces
-    - Avoid Data Duplications
-    - Collaboration
-    - Single Source of truth
-    - Types 
-        - Internal :To work , Source and target needs to be located in same region
-        - External: 
-            - To work , Make sure to add permission to external source for Fabric to access
-            - gen2 (same region)  , S3 , GCP , Salesforce
-        - Cache : 
-            - Create temporary Copy in Onelake
-            - Improve perfromance
-            - Profile > Workspace Settings > Onelake > Enable Cache
-         
-###  Data Warehouse
+### Data Warehouse
 - Delta Format but not exposed to user
 - Can use TSQL / spark / Dataflow Gen2
 - Fabric > New Item > Warehouse
-- new view /  Table /Stored Procedure (View+paramters)
-- Visualization
-- create schema gold;  
-   ``` CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
+- TYpes : 
+    - new view 
+    - Table 
+    - Stored Procedure (View+paramters)
+
+- Notebook > select Tsql > open warehouse
+   ``` 
+   create schema gold;
+   CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
     ALTER TABLE gold.E ADD CONSTRAINT pk
     PRIMARY KEY NONCLUSTERED (id) NOT ENFORCED;```
+
 - Inserting data Tables:
     - Pipeline : Dataflow , spark , Copy Activity
     - copy into
-        - schema should already exist
-        - copy into gold.T From "Onelake/ ABFS path" with(..)
-    - create table as 
-        - create table as gold.T as select * from lakehouse
-        - CREATE TABLE gold.T as select * from openrowset(BULK 'adls.csv',FORMAT = 'CSV',PARSER_VERSION = '2.0',HEADER_ROW = TRUE)
-- View 
-    - Save business logic in the view
-    - add Security
+ ```
+copy into gold.T From "Onelake/ ABFS path" with(..)
+
+----create table as gold.T as select * from lakehouse
+-----CREATE TABLE gold.T as select * from openrowset(BULK 'adls.csv',FORMAT = 'CSV',PARSER_VERSION = '2.0',HEADER_ROW = TRUE)
+```
+- View :  Save business logic and add Security
 - Visual Query editor : Dataflow Gen2 UI transformations
-- Notebook > select Tsql > open warehouse
-- Lakehouse 1)File=Bronze
 
 ### EventHouses
 - KQL
@@ -426,7 +432,7 @@ Principle of least privilage( PolP ) = Min level of access
     		- Copy , Delete Data , Invoke SSIS
       		- Dataflow ,Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
   	   	- Metadata : Lookup and Get Metadata
-  	   	- Control flow: If , Switch , Filter , Wait , Foreach, Until , Set Variable , Append Variable , Fail
+  	   	- Control flow:  Set Variable , Append Variable ,If , Switch , Filter , Wait , Foreach, Until , Fail
   	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functions , HD insight , Batch (cmd prompt), Refresh SQL
   	   	- Notification : Teams , Office Email , Outlook
   	   	- Lakehouse : Lakehouse Maintenence (run vaccum ) , Refresh Materialized view 
@@ -452,7 +458,7 @@ Principle of least privilage( PolP ) = Min level of access
 - Power BI based transformations
 - Query Settings: Edit , delete steps
 - Transform : Home , Transform Tab
-- Statistics : SUm , min , max etc. ,
+- Statistics : Sum , min , max etc. ,
 - Add Column tab to add new column
 - View > Diagram view to see the legacy Dataflow Diagram
 - merge(join) : 
@@ -466,9 +472,16 @@ Principle of least privilage( PolP ) = Min level of access
 - Run : Home > refresh
 
 ### Spark 
-- Notebook 
-- Start pool: Always on
-- Custom Pool: Takes time to spin up
+- Spark Settings :
+    -  Spark settings done at workspace
+    - Workspace Settings > DE > Spark Settings > Env > Set Default env On > Create new Env 
+    - Default Spark:
+        - Always running
+        - start immediately (if no customization is applied)
+    - Custom Spark:
+        - Takes normal time 3-4 mins to start
+        - Set by Workspace Admin
+    - Concurrency Setting: Multiple Notebooks /pipeline use same spark (Setting : Workspace > Setting > Data Eng > Concurrency) 
 - notebookutils.help
 - Environment (Install Custom library)
     - New Item > Environment > Configure and Save
@@ -480,16 +493,18 @@ Principle of least privilage( PolP ) = Min level of access
   create table T(id Int) -- create table in lakehouse 
   ```
 - ``` deltatable.createOrReplace(spark).tableName("T").addColumns(schema).execute() #create table and scheam```
+
+
 ### Schedule : 
 1. Workspace > select item > click on 3 dots  >  Schedule triggers
 2. There is also Event Based Triggers (Real Time Hub)
-3. PBI to detech semantoic model changes: Semantic > 3 dots > settings > Refresh
+3. PBI to detect semantic model changes: Semantic > 3 dots > settings > Refresh
 
 ## Monitoring
 1. Monitoring Hub :  Workspace > Monitor
    - Item Level
    - Spark NB > Spark UI 
-3. Capcaity Metric App :
+3. Capacity Metric App :
    - Capacity Consumption at workspace
    - Install Capacity Metric app (app store )
    - App > Open Compute Tab
@@ -504,8 +519,7 @@ Principle of least privilage( PolP ) = Min level of access
 	   - Ingestion results logs
 	   - Metrics
 	   - Query Logs 
-6. Warehouse > QUeryInsights
-	- Capacity Metric App
+6. Warehouse 
 	- Warehouse > Editor > Monitor
 	- Vorder :
  		- Makes read fast but write slow (Useful for OLAP)
@@ -520,20 +534,20 @@ Principle of least privilage( PolP ) = Min level of access
 - Monitored in Monitor Hub 
 
 ## CI CD
-### CI / Git
+
 What cannot be checked in
 - Any Data
 - File Eg: Env files 
 - Schedule
 - Lakehouse tables
-- Warehouse schema only
+- Warehouse schema can be checked in
 
 ------------------------------
 ## PBI
 1. semantic Model created in Fabric cannot be edited in PBI
 2. Measure = Aggregration ,  Column = WithColumn
-3. PBI service needed To share dashboard 
-4. Connect : Excel , SQL Server , Create Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
+3. PBI service needed to share dashboard 
+4. Connect : Excel , SQL Server , Create empty Table , Semantic Model / Lakehouse / Warehouse  , Dataverse
 5. Fabric > Settings > Developer Settings > Enable PBI
 6. DAX = Excel Formula Eg:YEAR(FactOrders[ShipDate])
    
@@ -589,7 +603,7 @@ What cannot be checked in
 1. Is a DAG
 2. Consists of 3 Items
     -Source+EventStream
-    -Trnsformation
+    -Transformation
     -Destination
 3. Source :
     - Event Stream: Acts as a connection point
