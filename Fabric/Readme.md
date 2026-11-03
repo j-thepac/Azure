@@ -14,105 +14,97 @@ PreReq: Create Fabric Account
 Url : Open app.fabric.microsoft.com
 
 ### Activity 1: Build Medallion Architecture  
-**Design** : 
-Src > LakeHouse(Files) > Lakehouse(Delta) > Warehouse(SQL)
 
-1. Open Fabric > NewWorspace > Select Fabric Trail >Enter "test" Save
-2. Workspace > Predefined TaskFlow > Medallion
-3. Perform:
-	- Keep only 1 GetData
-	- Remove Silver (Bronze can store both Silver and Bronze)
-	- Remove ML Task 
-4. Rename and add item: 
-	1. Ingest 	> New Item > pipeline
-	2. Bronze_Silver > New Item > LakeHouse
-	3. Clean 	> New Item > Notebook
-	4. Transform 	> New Item > Notebook
-	5. Gold 	> New Item > Warehouse
-	6. Visualize	> New Item > Semantic (add this later)
-5. Ingest : 
-	- Pipeline + CopyData
+Pre-Req:
+Open Fabric > NewWorspace > Select Fabric Trail >Enter "test" Save
+Workspace > Predefined TaskFlow > Medallion
+
+Design :
+Source_to_Bronze_Pipeline > Bronze_Silver_Storage_LH > Bronze_to_Silver_NP > Gold_WH > Visual_model
+
+Stepes: 
+1. Bronze
+	- Store: 	Bronze_Silver_Storage_LH ( Files)  
+	- Compute:	 Source_to_Bronze_Pipeline > Copy Data 
 	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
-	- dest = Lakehouse and path  GlobalSuperstore/Timestamp/file.xlsx
-	- Save and Run
-6. Clean:
-	- Notebooks pyspark
-	- Add dataitems > DataCatalog> Lakehouse
-	- Read xlsx as pandas(4 tabs) 
-	- Fix column names
-	- Add TS column
-	- Write into Lakehouse as Pyspark Delta
-7. Transform:
-	- TSQL
-	- Add dataitems > DataCatalog> 
-	- verify Data using inspect: Select * from .schema.Table
-	- create schema GlobalSuperstore
-	- ```  drop table if exists GlobalSuperstore.DimCustomer;
-		create Table GlobalSuperstore.DimCustomer as
-		select row_number() over (order by CustomerID) as CustKey,*,1 as Active
-		from .GlobalSuperStore.Customer```
-	- Wait for few min to reflect
-	- Create Fact and Dim (code below)
-		- DimCustomer
-		- DimProduct:ProductKey, ProductID, ProductName, Category, Sub-Category
-		- DimGeography:GeographyKey, City, State, Country, Region
-		- FactSales: RowID, OrderID, OrderDateKey, ShipDateKey, CustomerKey, ProductKey, GeographyKey, Sales, Quantity, Discount, Profit, ShippingCost
-8. Gold 
-	- Open Warehouse > verify Data
-9. Visualize
-    - Add item > Semantic Model > One Lake Catalog >Select Warehouse > Save
-	- Change Semantic model from Viewing >  Editing
-	- Manage Relationship > New Relationship >1st Fact Table and 2nd Dim Table
-	- repeat for all Dims 
+	- ingest in Timestamp subfolder
+2. Silver 
+	- Store: 	Bronze_Silver_Storage_LH (Tables)
+	- Compute:	Bronze_to_Silver_NP = Spark nb + pandas (read xlsx 4 tabs ) 
+	- Create Columns : Ts , Hash
+	- Clean Column Name
+	- New Delta Table for each Tab
+	- path = "abfss://xxxx/Tables/Schema/Tablename
+3. Gold: 
+	- Store: 	Gold_WH 
+	- Compute: 	Gold_WH ( No Notebook needed ) 
+	- Open Warehouse , add above Lakehouse > New Query
+	- Add is_active col for dim (scd 2)
+	- Create Country (postalcode column has null) ,
+	- Product dim (Product ID is repeated)from Orders 
+	- Create Cust Dim from customer table
+	- Create Fact Table with Surrogate Key and retain Business Columns
+	- Verify : Count of Fact table shd not change 
+```
+create table GlobalSuperStore.DimCustomer as 
+select ROW_NUMBER() over ( order by CustomerName asc) as CusKey,1 as is_active,*
+from  (select DISTINCT CustomerID ,CustomerName , DateofBirth
+     from Lakehouse.GlobalSuperStore.customer ) T	
+```
 
+4. SCD 2 
+```
+ declare @max_skey int
+ set  @max_skey = select max(skey) from T
+ insert into t 
+select *,@max_skey+row_number() over ...
+```
+
+
+5. Star Schema
 ``` 
-Fact and Dim 
-create schema GlobalSuperstore ;
-drop table if exists GlobalSuperstore.DimCustomer ;
-drop table if exists GlobalSuperstore.DimGeo;
-drop table if exists GlobalSuperstore.DimProd;
-drop table if exists GlobalSuperstore.FactOrders;
-----
-create Table GlobalSuperstore.DimCustomer as
-select row_number() over (order by CustomerID) as CustKey,*,1 as Active
-from Lakehouse.GlobalSuperStore.Customer;
+-- CREATE SCHEMA GlobalSuperStore;
+drop table GlobalSuperStore.DimCustomer
+create table GlobalSuperStore.DimCustomer as 
+select ROW_NUMBER() over ( order by CustomerName asc) as CusKey,*,1 as is_active
+from  (select DISTINCT CustomerID ,CustomerName , DateofBirth
+     from Lakehouse_3_11.GlobalSuperStore.customer ) T
 
--- declare @max_skey int
--- set  @max_skey = select max(skey) from T
--- insert into t select *,@max_skey+row_number() over ...
-----
-create Table GlobalSuperstore.DimGeo as
-SELECT 
-    ROW_NUMBER() OVER (ORDER BY City, State, Country, Region) AS GeoKey,
-    City, State, Country, Region,1 as Active
-FROM (
-    SELECT DISTINCT City, State, Country, Region
-    FROM Lakehouse.GlobalSuperStore.Orders
-) AS G;
-----
-create table GlobalSuperstore.DimProd as
-select Row_Number() over (Order by ProductID, ProductName, Category, [Sub-Category]  ) as ProductKey,*, 1 as Active
+
+drop table GlobalSuperStore.DimCountry
+create table GlobalSuperStore.DimCountry as 
+select ROW_NUMBER() over (order by Country) as countryKey, *,1 as is_active
+ from (
+select DISTINCT  [State] , [Country] , Market , Region 
+from Lakehouse_3_11.GlobalSuperStore.[order] ) T
+
+
+drop table GlobalSuperStore.DimProduct
+create table GlobalSuperStore.DimProduct as 
+select ROW_NUMBER() over (order by ProductID ) as ProductKey, * ,1 as is_active
 from (
-    select  distinct ProductID, ProductName, Category, [Sub-Category] 
-    from Lakehouse.GlobalSuperStore.Orders
- ) T;
-----
-Create Table GlobalSuperstore.FactOrders as 
-SELECT
-    DimProd.ProductKey,
-    DimGeo.GeoKey,
-    DimCustomer.CustKey,
-    O.Sales,
-    O.Profit,
-    O.Quantity,
-    O.Discount,
-    O.ShippingCost,
-    O.OrderDate,
-    O.ShipDate
-FROM Lakehouse.GlobalSuperStore.Orders O
-Left join GlobalSuperstore.DimProd on O.ProductID= DimProd.ProductID and O.ProductName=DimProd.ProductName and  O.Category=DimProd.Category and O.[Sub-Category]=DimProd.[Sub-Category] 
-Left join GlobalSuperstore.DimGeo on O.City=DimGeo.City and O.State=DimGeo.State and O.Country=DimGeo.Country and O.Region=DimGeo.Region 
-Left join GlobalSuperstore.DimCustomer on O.CustomerID=DimCustomer.CustomerID
+select DISTINCT  [ProductID] , [ProductName] , [Category], [Sub-Category]
+from Lakehouse_3_11.GlobalSuperStore.[order] ) T
+
+drop table GlobalSuperStore.FactOrder
+create table GlobalSuperStore.FactOrder as 
+select 
+prd.ProductKey
+,ctry.countryKey
+,cust.CusKey
+,o.OrderID
+,o.OrderDate
+,o.ShipDate
+,o.Sales
+,o.Quantity
+,o.Discount
+,o.Profit
+,o.ShippingCost
+,o.OrderPriority
+from Lakehouse_3_11.GlobalSuperStore.[order] o
+left outer join GlobalSuperStore.DimCustomer cust on o.CustomerID=cust.CustomerID 
+left outer join GlobalSuperStore.DimCountry ctry on o.[State]=ctry.[State] and o.[Country]=ctry.[Country] and o.Market=ctry.Market and o.Region=ctry.Region 
+left outer join GlobalSuperStore.DimProduct prd on prd.[ProductID] = o.[ProductID] and  prd.[ProductName] = o.[ProductName]
 ```
 
 ### Activity2 : Create PBI Dashboard
@@ -605,13 +597,12 @@ What cannot be checked in
     -Source+EventStream
     -Transformation
     -Destination
-3. Source :
-    - Event Stream: Acts as a connection point
+3. Source + Event Stream(Acts as a connection point)
     - External - CDC , IOT , EventHub
     - Fabric Events - Workspace , Data
     - Custom - Kafka
     - Sample
-4. Transformation: Manage fields, Aggregate, Expand(explode), Filter, Group by, Union
+4. Transformation: Manage fields, Expand(explode), Filter, Aggregate,Group by, Union
     - ManageFields : change column name ,type , new Col , datetime , String and Math operation
 5. Destination:
     - EventHouse : KQL
