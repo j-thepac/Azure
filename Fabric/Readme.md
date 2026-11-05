@@ -656,7 +656,8 @@ T
 
 
 T
-| summarize new_col = count() by c -- group by c
+| summarize new_col = count() 
+| by c -- group by c
 
 .show_tables
 .create table Tablename(id:int,name:string)
