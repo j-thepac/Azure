@@ -641,21 +641,21 @@ What cannot be checked in
 1. | symbol passes the result of one operation to the next, forming a query pipeline.
 
 ```
-table_name --show table
+T --show table
 
-table_name 
+T 
 |project c1 ,c2	-- select
 |extend c3 = fn()
 |take 100	-- pyspark rdd
 |count
 
 
-table_name
+T
 | where c != 30 and c2 == '1' and c3 contains "a"
 | sort by Timestamp desc
 
 
-table_name
+T
 | summarize new_col = count() by c -- group by c
 
 .show_tables
