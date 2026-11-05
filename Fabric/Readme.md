@@ -138,7 +138,7 @@ Pre- Req
    - TargetSales(Measure=5 mill) ,Total Sales , Year
    - Click on each year to see changes
 10. How far from our target using **Guage** : Sales Vs Target (measure)
-
+11. Map : Profit country Green , Loss in Red
 
 ### Activity 3: BikeShare 
 - Design : Src > EventStream > A. Destination (Save Original)
