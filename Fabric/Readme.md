@@ -346,7 +346,6 @@ Pre- Req
             - Each file <= 1GB only
             - Create temporary Copy in Onelake
             - Improve perfromance
-            - Profile > Workspace Settings > Onelake > Enable Cache
 
 - Types:
     - Files ( Bronze ):
@@ -370,7 +369,7 @@ Pre- Req
 - Using Notebook 
     - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
     - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
-    - df.write.format("delta").mode("overwrite").options(path="abfss://<path>/Tables/<schema>/<table>/")
+    - df.write.format("delta").mode("overwrite").options(path="abfss://path/Tables/schema/tablename/")
 
 ### Data Warehouse
 - Delta Format but not exposed to user
