@@ -139,8 +139,13 @@ Pre- Req
    - Click on each year to see changes
 10. How far from our target using **Guage** : Sales Vs Target (measure)
 11. Add filter based on Country : View Tab > Filter sales <5000000
+12. Drill up and Drill down : Data already has drills eg: Year>Month>Day
 
-### Activity 3: BikeShare 
+### Activity 3 : Streaming 
+#### 3.1: Streaming BikeShare Activator
+1. Workspace > New Item > Activator > Sample 
+
+### 3.2: Streaming BikeShare End to End
 - Design : Src > EventStream > A. Destination (Save Original)
   									 > B. Transformation > Filter > Destination
   
@@ -259,13 +264,13 @@ Pre- Req
     - But data can be guessed using between and like operators . 
 
     - ```create table T (nm varchar(10) masked with (function='fx') NULL)```
-    - ``` Alter Table T add masked with (function='fx');```
-    -  Alter Table T add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
+    - ``` Alter Table T ALTER COLUMN C add masked with (function='fx');```
+    -  Alter Table T alter column c add masked with (function='partial(4,"X",0)'); -- 555-XXXX-XXXX
     - Types : 
         - default() 
         - email() 
         - random(start,end) --used for numbers
-        -  partial(prefix,padding,suffix) 
+        -  partial(start_after,padding,ending_char) 
    
 ## Data Governance  : 
 1. Labelling data
@@ -297,8 +302,6 @@ Pre- Req
    - Workspace:  Workspace > at the top Ck on Lineage View
    - Item level: Item Lineage > Item > Rt Ck > Lineage View
    
-
- 
 
 
 ## Create Account Key 
@@ -370,7 +373,19 @@ Pre- Req
     - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
     - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
     - df.write.format("delta").mode("overwrite").options(path="abfss://path/Tables/schema/tablename/")
+```
+# Add below in Python cell
+# nb1 and nb2 run concurrently.nb3 runs only after nb1 completes.
+DAG = {
+    "activities": [
+            {"name": "nb1", "path": "notebook1"},
+            {"name": "nb2", "path": "notebook2"},
+            {"name": "nb3", "path": "notebook3","dependencies": ["nb1"]}
+        ]
+    }
 
+notebook.runMultiple(DAG)
+```
 ### Data Warehouse
 - Delta Format but not exposed to user
 - Can use TSQL / spark / Dataflow Gen2
@@ -422,7 +437,7 @@ copy into gold.T From "Onelake/ ABFS path" with(..)
   		- Move and Transform :
     		- Copy , Delete Data , Invoke SSIS
       		- Dataflow ,Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
-  	   	- Metadata : Lookup and Get Metadata
+  	   	- Metadata : Lookup and Get Metadata(file/folder details)
   	   	- Control flow:  Set Variable , Append Variable ,If , Switch , Filter , Wait , Foreach, Until , Fail
   	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functions , HD insight , Batch (cmd prompt), Refresh SQL
   	   	- Notification : Teams , Office Email , Outlook
@@ -618,7 +633,16 @@ What cannot be checked in
      					|where Name has "azure"```
    - use less columns
    - Use 'has' instead of 'contains'(slower) . has_cs(better) case sensitive
-   
+7. Windows: Eg Train location every minute .To find Avg Speed Eg : 10:00  10:01  10:02  10:03 ..
+- Tumbling = Fixed, no overlap Eg : |---- 10:00to10:05  ----|------ 10:05to10:10  ------|
+- Hopping = Fixed duration, fixed hop interval.Eg :  10:00 to 10:05 ,  10:02 to 10:07 .. 
+- Sliding = moves whenever a new event arrives. Eg: New event at 10:05 → Calculate 10:00–10:05
+New event at 10:06 → Calculate 10:01–10:06
+- Session = Based on inactivity. Eg: session1 ...10:00to10:05 ..inactive_stopsesson1...,active_start_session2..10:08..
+8. Max message Size = 1MB
+9. OPTIMIZE: Compacts small Delta files into larger files to improve read performance.
+10. VACUUM: Deletes obsolete Delta data files to reclaim storage space.
+
 ### Activity: Custom Python
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
 2. Workspace > EventStream "test" > Create >
@@ -645,7 +669,7 @@ T --show table
 
 T 
 |project c1 ,c2	-- select
-|extend c3 = fn()
+|extend c3 = fn() -- new Column
 |take 100	-- pyspark rdd
 |count
 
