@@ -358,9 +358,11 @@ Pre- Req
    	        - Can be used in Spark 
         - External: 
             -  Access and store data from external sources S3 , SAP  etc., 
-            - Workspace > Settings > OneLake > Enable cache for shortcuts
-            - Keep data only fro 24hour
-            - Each file <= 1GB only
+            -
+            	- Workspace > Settings > OneLake > Enable cache for shortcuts
+               	- Lakehouse > GetData > New Table Shortcut
+            - Keep data only for 24hour
+            - 1 file <= 1GB only
             - Create temporary Copy in Onelake
             - Improve perfromance
 
@@ -387,6 +389,8 @@ Pre- Req
     - Open Notebook > In Lakehouse Explorer, select Add Lakehouse
     - df=spark.read.format("csv").load("abfss://<path>/Files/<file>")
     - df.write.format("delta").mode("overwrite").options(path="abfss://path/Tables/schema/tablename/")
+    - import notebookutils
+    - Can read Warehouse , Lakehouse Files and Tables  , Blob , SQL servers etc., 
 ```
 # Add below in Python cell
 # nb1 and nb2 run concurrently.nb3 runs only after nb1 completes.
@@ -408,8 +412,8 @@ notebook.runMultiple(DAG)
     - new view 
     - Table 
     - Stored Procedure (View+paramters)
-
-- Notebook > select Tsql > open warehouse
+    - Functions
+- Warehouse > Queries > New Query
    ``` 
    create schema gold;
    CREATE TABLE gold.E ( id INT ,Name VARCHAR(100)); -- cannot create primary key on table creation
@@ -431,7 +435,8 @@ copy into gold.T From "Onelake/ ABFS path" with(..)
 ### EventHouses
 - KQL
 - TimeSeries Data
-- Real Time analysis , Geo Spatial 
+- Real Time analysis
+- Geo Spatial 
 --------------------------------------------------------------------------------------
 ## Orchestration : 
 1. Pipeline
@@ -450,7 +455,7 @@ copy into gold.T From "Onelake/ ABFS path" with(..)
   	- Types :
   		- Move and Transform :
     		- Copy , Delete Data , Invoke SSIS
-      		- Dataflow ,Spark Job Definition , Notebook , Script SQL, Stored Proecudre, KQL ,
+      		- Dataflow , Spark Job Definition (run file) , Notebook , Script SQL, Stored Proecudre, KQL ,
   	   	- Metadata : Lookup and Get Metadata(file/folder details)
   	   	- Control flow:  Set Variable , Append Variable ,If , Switch , Filter , Wait , Foreach, Until , Fail
   	   	- Orchestrate : Invoke Pipeline , Web , Webhook , Semantic model refresh , Azure Databricks , Functions , HD insight , Batch (cmd prompt), Refresh SQL
