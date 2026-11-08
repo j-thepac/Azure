@@ -270,7 +270,7 @@ Pre- Req
 				GO
 				 
 				CREATE SECURITY POLICY SalesFilter
-				ADD FILTER PREDICATE fn(@nm) ON sales.Orders
+				ADD FILTER PREDICATE fn(@nm) ON T
 				WITH (STATE = ON);
 		```
 8. Masking :
