@@ -2,7 +2,8 @@
 - PurView
 
 ## Learn By Doing : Fabric Practice 
-**PreReq: Create Fabric Account**
+
+### Create Fabric Account
 1. Create account in Azure
 2. Create a sample user in Azure > EntraID > Users
 3. Once Created > Click on new User >Assigned role >Add assignments> Add Fabric Administrator
