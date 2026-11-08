@@ -2,7 +2,8 @@
 1. Bronze ( Source To Fabric)  
     1. Try Shortcut with Cache
     2. If above not useful : Use Mirror
-    3. If above not useful : Pipeline + Copy (staging) into Lakehouse Files 
+    3. If above not useful : Pipeline + Copy (staging) into Lakehouse Files
+    4. Else try Notebook
 2. Silver ( Lakehouse DELTA tables ) : Bronze data to Delta Tables in Lakehouse using Notebook 
 Note : Dataflow gen2 is only for small Datasets 
 3. Gold (Warehouse) : Silver Data into WAREHOUSE Using TSQL
