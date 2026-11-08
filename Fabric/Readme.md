@@ -298,10 +298,10 @@ Pre- Req
         - Promoted : Any one with write permission can apply this label
         - Certified :
    		    - Only selected users by Fabric Admin can apply this .
-            - Item appears across all workspaces but data not accesiible yet
+            - meets the organization's quality standards
         - Master Data :
             - Only selected users by Fabric Admin can apply this .
-            - Show data is single source of truth
+            - Core / Single source of truth
 4. Tagging :
    - Admin : Admin Portal > Tags
    - Only Fabric Admin can create Tags
