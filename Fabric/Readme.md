@@ -258,8 +258,21 @@ Pre- Req
     - SQL Access 
         - User needs to already have access to Warehouse / Lakehouse 
         - Lakehouse Tables , Warehouse
-        - GRANT SELECT (row , column and Table  ) , REVOKE, DENY
-
+        - GRANT SELECT (row , column and Table ) , REVOKE, DENY
+		```
+				grant select on T to [user] ;  -- Table level security 
+				grant select on T(c1,c2) to [user] ; -- Col level Security 
+				
+				-- Row level Security
+				CREATE FUNCTION fn(@nm AS nvarchar(50))RETURNS TABLE WITH SCHEMABINDING
+				AS
+				    RETURN SELECT 1 AS tvf_securitypredicate_result WHERE @nm = USER_NAME() ;
+				GO
+				 
+				CREATE SECURITY POLICY SalesFilter
+				ADD FILTER PREDICATE fn(@nm) ON sales.Orders
+				WITH (STATE = ON);
+		```
 8. Masking :
     - Underlying data is masked but not altered
     - But data can be guessed using between and like operators . 
