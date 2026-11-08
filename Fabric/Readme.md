@@ -209,7 +209,7 @@ Pre- Req
 	   	- Can View only 1 domain
 	   	- add Contibutors to his Domain
 	   	- Change settings of his domain
-    - Domain Contributor
+    - Domain Contributor : Organize worksapce / Assign workspaces to domains
     -  There is **NO** Domain Member and Viewer
 5. Workspace Roles
    	- Workspace > Manage access > Add 
