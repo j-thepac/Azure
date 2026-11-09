@@ -647,20 +647,65 @@ What cannot be checked in
     - Live : Ingest Date
 4. Source >http > https://konkan-railway-api.vercel.app/api/v4/fetchTrains
 5. Real TIme Dashoboard using Maps with Latitude and Longitude
-6. Optimization KQL :
-   - filter first eg :```t
-     					|where Name has "azure"```
-   - use less columns
-   - Use 'has' instead of 'contains'(slower) . has_cs(better) case sensitive
-7. Windows: Eg Train location every minute .To find Avg Speed Eg : 10:00  10:01  10:02  10:03 ..
+6. Windows: Eg Train location every minute .To find Avg Speed Eg : 10:00  10:01  10:02  10:03 ..
 - Tumbling = Fixed, no overlap Eg : |---- 10:00to10:05  ----|------ 10:05to10:10  ------|
 - Hopping = Fixed duration, fixed hop interval.Eg :  10:00 to 10:05 ,  10:02 to 10:07 .. 
 - Sliding = moves whenever a new event arrives. Eg: New event at 10:05 → Calculate 10:00–10:05
 New event at 10:06 → Calculate 10:01–10:06
 - Session = Based on inactivity. Eg: session1 ...10:00to10:05 ..inactive_stopsesson1...,active_start_session2..10:08..
-8. Max message Size = 1MB
-9. OPTIMIZE: Compacts small Delta files into larger files to improve read performance.
-10. VACUUM: Deletes obsolete Delta data files to reclaim storage space.
+7. Max message Size = 1MB
+8. OPTIMIZE: Compacts small Delta files into larger files to improve read performance.
+9. VACUUM: Deletes obsolete Delta data files to reclaim storage space.
+### KQL : Kusto Query Language
+1. | symbol passes the result of one operation to the next, forming a query pipeline.
+2. Case Sensitive
+3. Optimization KQL :
+   - filter first eg :```t
+     					|where Name has "azure"```
+   - use less columns
+   - Use 'has' instead of 'contains'(slower) . has_cs(better) case sensitive
+   
+```
+			T --show table
+			
+			T 
+			|project c1 ,c2	-- select
+			|extend c3 = fn() -- new Column
+			|take 100	-- pyspark rdd
+			|count
+			
+			
+			T
+			| where c != 30 and c2 == '1' and c3 contains "a"
+			| sort by Timestamp desc
+			
+			
+			T
+			| summarize new_col = count() 
+			| by c -- group by c
+			
+			.show_tables
+			.create table Tablename(id:int,name:string)
+			.ingest inline into table Tablename <| 1,a
+			.clear table Table name -- off one lake availablity
+			.drop materialized-view V
+			------------------
+			.create materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table table_name
+			{table_name
+			|count}
+			-----------------
+			.create function with f(id:int){
+			table_name
+			|where c=id}  --f(1)
+			
+			-- practise window functions
+			--
+```
+## Others
+1. Mirror
+   - Workspace > New Item > Search "mirror"
+   - Make replicate of Datasources : Add Db
+  
 
 ### Activity: Custom Python
 1. Fabric > NewWorspace > Select Fabric Trail > "Test" create
@@ -680,47 +725,5 @@ New event at 10:06 → Calculate 10:01–10:06
      ```
    - Run Code and see the result in event stream
    - Add Transform > Expand (explode rows) > Manage Fields(col  transformation) >GroupBY >Destination (EventHOuse)
-### KQL : Kusto Query Language
-1. | symbol passes the result of one operation to the next, forming a query pipeline.
-
-```
-T --show table
-
-T 
-|project c1 ,c2	-- select
-|extend c3 = fn() -- new Column
-|take 100	-- pyspark rdd
-|count
-
-
-T
-| where c != 30 and c2 == '1' and c3 contains "a"
-| sort by Timestamp desc
-
-
-T
-| summarize new_col = count() 
-| by c -- group by c
-
-.show_tables
-.create table Tablename(id:int,name:string)
-.ingest inline into table Tablename <| 1,a
-.clear table Table name -- off one lake availablity
-.drop materialized-view V
-------------------
-.create materialized-view with(backfill=true,effectiveDateTime=datetime(2025-02-01)) V on table table_name
-{table_name
-|count}
------------------
-.create function with f(id:int){
-table_name
-|where c=id}  --f(1)
-
--- practise window functions
---
-```
-## Others
-1. Mirror
-   - Workspace > New Item > Search "mirror"
-   - Make replicate of Datasources : Add Db , SAP , Catalog  , etc., 
+SAP , Catalog  , etc., 
    - To make 
