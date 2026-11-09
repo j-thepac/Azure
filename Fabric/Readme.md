@@ -659,7 +659,8 @@ New event at 10:06 → Calculate 10:01–10:06
 ### KQL : Kusto Query Language
 1. | symbol passes the result of one operation to the next, forming a query pipeline.
 2. Case Sensitive
-3. Optimization KQL :
+3. Sort default desc
+4. Optimization KQL :
    - filter first eg :```t
      					|where Name has "azure"```
    - use less columns
