@@ -316,8 +316,6 @@ Pre- Req
    - Workspace:  Workspace > at the top Ck on Lineage View
    - Item level: Item Lineage > Item > Rt Ck > Lineage View
    
-
-
 ## Create Account Key 
 - Once resource is created 
 - Azure >open service > Security > Access Key 
@@ -413,6 +411,12 @@ notebook.runMultiple(DAG)
     - Table 
     - Stored Procedure (View+paramters)
     - Functions
+- View :  Save business logic and add Security
+- Visual Query editor : Dataflow Gen2 UI transformations
+- Vorder :
+ 		- Makes read fast but write slow (Useful for OLAP)
+     	- On by Default .To off -- ALter database current set voder =off;
+        - Enabled at Workspace level
 - Warehouse > Queries > New Query
    ``` 
    create schema gold;
@@ -429,8 +433,7 @@ copy into gold.T From "Onelake/ ABFS path" with(..)
 ----create table as gold.T as select * from lakehouse
 -----CREATE TABLE gold.T as select * from openrowset(BULK 'adls.csv',FORMAT = 'CSV',PARSER_VERSION = '2.0',HEADER_ROW = TRUE)
 ```
-- View :  Save business logic and add Security
-- Visual Query editor : Dataflow Gen2 UI transformations
+
 
 ### EventHouses
 - KQL
@@ -546,10 +549,7 @@ copy into gold.T From "Onelake/ ABFS path" with(..)
 	   - Query Logs 
 6. Warehouse 
 	- Warehouse > Editor > Monitor
-	- Vorder :
- 		- Makes read fast but write slow (Useful for OLAP)
-     	- On by Default .To off -- ALter database current set voder =off;
-        - Enabled at Workspace level
+
           
 ## Semantic Model
 - Logical Representation of the Warehouse / Lakehouse 
