@@ -2,19 +2,18 @@
 
 1. Login to Azure Portal as Admin.
 2. Create Users and Group 
-  - Entra ID → Users → New user → Create user `test`.
-  - Entra ID → Groups → New group → Create group `test_group`.
-  -`test_group` → Members → Add user `test`.
-3. Create Resource Group
-  - Resource Groups → Create `test_resource_group` → Region: `South India`.
-  - RBAC (Role based Access control :Add user/group to a Role) 
-    - `test_resource_group`> Access control (IAM)> Add role assignment>`SQL Server Contributor,SQL Security Manager`>Assign to `test_group` 
-    - Scope: test_resource_group
+    - Entra ID → Users → New user → Create user `test`.
+    - Entra ID → Groups → New group → Create group `test_group`.
+    - open `test_group` → Members → Add user `test`.
+    - Resource Groups → Create `test_resource_group` → Region: `South India`.
+    - RBAC (Role based Access control :Add user/group to a Role) 
+      - `test_resource_group`> Access control (IAM)> Add role assignment>`SQL Server Contributor,SQL Security Manager`>Assign to `test_group` 
+      - Scope: test_resource_group
 4. Install Azure CLI on Ubuntu.
-- Login to Azure CLI as `test` using `az login`.
-- Check access :  $az account list and $az group list 
-- Install Terraform using the official HashiCorp repository.
-- Create Terraform project: `~/Programming/azure-terraform/sql`.
+    - Login to Azure CLI as `test` using `az login`.
+    - Check access :  $az account list and $az group list 
+    - Install Terraform using the official HashiCorp repository.
+    - Create Terraform project: `~/Programming/azure-terraform/sql`.
 
 
 # Terraform / Azure Commands
