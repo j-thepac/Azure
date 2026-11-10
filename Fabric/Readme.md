@@ -285,7 +285,9 @@ Pre- Req
         - email() 
         - random(start,end) --used for numbers
         -  partial(start_after,padding,ending_char) 
-   
+        
+9. Delete Workspace and items : Open Workspace > Settings > Bottom "Remove this Workspace"   
+
 ## Data Governance  : 
 1. Labelling data
 2. Types : Endorsement , Tagging , 

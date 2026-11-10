@@ -2,20 +2,20 @@
 
 ## Basic
 1. EntraID 
-  - Tenant / Company / Org
-  - Create Users / Groups 
+    - Tenant / Company / Org
+    - Create Users / Groups 
 2. Resoure Group
-  - Create this first before creating any service
-  - All service is linked to this 
-  - Deleteing this removes all services 
+    - Create this first before creating any service
+    - All service is linked to this 
+    - Deleteing this removes all services 
 3. Commands 
- - az login
- - az <service> <list> eg:az group list , az webapp list
+    - az login
+    - az <service> <list> eg:az group list , az webapp list
 
 
 ## Python App +JWT 
 ###  Part 1: App
-1. Create Resource Graup: Azure  > Search  Resource groups → Create "mytime-rg"
+1. Create Resource Group: Azure  > Search  Resource groups → Create "mytime-rg"
 2. Create Webapp : Search → App Services → Create → Web App
     - Subscription: Your subscription
     - Resource Group: mytime-rg
