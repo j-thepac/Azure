@@ -25,25 +25,26 @@ Source_to_Bronze_Pipeline > Bronze_Silver_Storage_LH > Bronze_to_Silver_NP > Gol
 
 Stepes: 
 1. Bronze
-	- Store: 	Bronze_Silver_Storage_LH ( Files)  
-	- Compute:	 Source_to_Bronze_Pipeline > Copy Data 
+	- Store: 	LH ( Files)  
+	- Compute:	 Source_to_Bronze_Pipeline > Copy Data > Http
+	- Destination: GSS/ts/gss.xlsx
 	- Source = https://github.com/j-thepac/Azure/raw/refs/heads/main/Fabric/GlobalSuperstore.xlsx
-	- ingest in Timestamp subfolder
+
 2. Silver 
-	- Store: 	Bronze_Silver_Storage_LH (Tables)
-	- Compute:	Bronze_to_Silver_NP = Spark nb + pandas (read xlsx 4 tabs ) 
-	- Create Columns : Ts , Hash
-	- Clean Column Name
-	- New Delta Table for each Tab
-	- path = "abfss://xxxx/Tables/Schema/Tablename
+	- Store: 	LH (Tables)
+	- Compute:	NB = Spark nb + pandas (read xlsx 4 tabs ) 
+	- operation : header(space+trim), above ts , Hash (using pyspark) ,1 partition
+	- New Delta Table for each Tab - "Orders","People","Returns","Customer"
+	- path = "abfss://xxxx/Tables/GSS/Tablename" , 
 3. Gold: 
 	- Store: 	Gold_WH 
 	- Compute: 	Gold_WH ( No Notebook needed ) 
-	- Open Warehouse , add above Lakehouse > New Query
-	- Add is_active col for dim (scd 2)
-	- Create Country (postalcode column has null) ,
-	- Product dim (Product ID is repeated)from Orders 
-	- Create Cust Dim from customer table
+	- Open Warehouse , add above Lakehouse > New Query > select * from LH.GSS.DimCustomer
+	- Create Dim :
+		- Country (postalcode column has null)from Orders ,
+		- Product dim (ProductID has dups )from Orders 
+		- Create Cust Dim from customer table
+		- Add is_active and retain ts
 	- Create Fact Table with Surrogate Key and retain Business Columns
 	- Verify : Count of Fact table shd not change 
 ```
