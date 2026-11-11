@@ -56,8 +56,7 @@ from  (select DISTINCT CustomerID ,CustomerName , DateofBirth
 
 4. SCD 2 
 ```
- declare @max_skey int
- set  @max_skey = select max(skey) from T
+DECLARE @mx INT = (SELECT MAX(CusKey) FROM WH.GSS.DimCustomer);
  insert into t 
 select *,@max_skey+row_number() over ...
 ```
