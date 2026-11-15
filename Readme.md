@@ -31,6 +31,13 @@
         - Azure > Managed Identities > Create "uaidentity"
         - Blob > Access Control (IAM) > Add > Add role Assignment>add Storage Bob Contrib >select Managed Identity > Add  "uaidentity"
         - Function App > Settings > Identity > User assigned > add > "uaidentity"
+          
+### Entra ID :
+1. User enters username and password in Azure login.
+2. Entra ID verifies the credentials.
+3. Entra ID issues an access token.
+4. Azure validates the token and checks permissions.
+5. Access is granted or denied.
 
 ### Service Principle 
 -  Applications should have their own identity to access other app 
@@ -39,10 +46,6 @@
     - Click on Manage > Certificates and Secrets > New Secret > Copy Value
     - Blob Storage > IAM > Add Role Assignment > Storage Contributor > Next > Member> "testreg" > Save 
     - Azure Functions > Select Fn > Settings > Env Variables > Add TENANT_ID,CLIENT_ID,CLIENT_SECRET(copied value) , STORAGE_ACCOUNT
-
-
-
-
 
 
 ```
