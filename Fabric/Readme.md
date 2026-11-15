@@ -383,6 +383,12 @@ Pre- Req
           - ddf.options("parquet.vorder.default":"true")
           - %%sql  SET spark.sql.parquet.vorder.enabled=TRUE
         - table > 3 dots > maintenance 1)optimize size and Vorder 2) Vaccum +days 3) ddf.delete() will do softdelete
+		- Spark SQl
+      		- Use %%sql
+    		- create table T(id int , name string) using delta
+			- create table Lh2.schema.T as select * from Lh1.schema.T
+      	- Spark Python 
+		- TSQL : Not supported on Delta Lake 
 
 - File to table (delta) : Any file (csv) can be converted to Delta Tables by "rtclick > load table.
 - Using Notebook 
