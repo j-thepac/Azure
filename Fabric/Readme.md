@@ -37,14 +37,13 @@ Stepes:
 	- New Delta Table for each Tab - "Orders","People","Returns","Customer"
 	- path = "abfss://xxxx/Tables/GSS/Tablename" , 
 3. Gold: 
-	- Store: 	Gold_WH 
-	- Compute: 	Gold_WH ( No Notebook needed ) 
-	- Open Warehouse , add above Lakehouse > New Query > select * from LH.GSS.DimCustomer
-	- Create Dim :
-		- Country (postalcode column has null)from Orders ,
-		- Product dim (ProductID has dups )from Orders 
-		- Create Cust Dim from customer table
-		- Add is_active and retain ts
+	- Store: 	Add Gold_WH 
+	- Compute: 	NOtebook > TSQL 
+	- Open Notebook > Select TSQL > Explorer : Add Golf_WH and Silver_WH
+	- Create Dim : Add is_active and retain ts
+		- **DimCountry** (postalcode column has null)from Orders ,
+		- **DimProduct** dim (ProductID has dups )from Orders 
+		- **DimCustomer** Create Cust Dim from customer table
 	- Create Fact Table with Surrogate Key and retain Business Columns
 	- Verify : Count of Fact table shd not change 
 ```
