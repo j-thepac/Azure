@@ -17,11 +17,10 @@ Url : Open app.fabric.microsoft.com
 ### Activity 1: Build Medallion Architecture  
 
 Pre-Req:
-Open Fabric > NewWorspace > Select Fabric Trail >Enter "test" Save
+Open Fabric > New Workspace > Select Fabric Trail >Enter "test" Save
 Workspace > Predefined TaskFlow > Medallion
 
-Design :
-Source_to_Bronze_Pipeline > Bronze_Silver_Storage_LH > Bronze_to_Silver_NP > Gold_WH > Visual_model
+Design : GetData > LH_Bronze_Silver > NB_Bronze_Silver > WH_Gold > NB_Gold > Visualise
 
 Stepes: 
 1. Bronze
@@ -32,7 +31,7 @@ Stepes:
 
 2. Silver 
 	- Store: 	LH (Tables)
-	- Compute:	NB = Spark nb + pandas (read xlsx 4 tabs ) 
+	- Compute:	NOtebook = Spark nb + pandas (read xlsx 4 tabs ) 
 	- operation : header(space+trim), above ts , Hash (using pyspark) ,1 partition
 	- New Delta Table for each Tab - "Orders","People","Returns","Customer"
 	- path = "abfss://xxxx/Tables/GSS/Tablename" , 
