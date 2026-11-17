@@ -707,6 +707,12 @@ New event at 10:06 → Calculate 10:01–10:06
 			
 			-- practise window functions
 			--
+-- Kusto Query : Save .
+-- Editing  , Refrest Setting > Live Refresh 
+New_Bike
+| summarize TotalBikes = sum(No_Bikes)
+    by bin(ingestion_time(), 1s)
+| render timechart
 ```
 ## Others
 1. Mirror
