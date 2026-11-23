@@ -62,7 +62,12 @@ select *,@max_skey+row_number() over ...
 
 5. Star Schema
 ``` 
--- CREATE SCHEMA GlobalSuperStore;
+CREATE SCHEMA GlobalSuperStore;
+
+create table GlobalSuperStore.DimDate as 
+SELECT DATEADD(DAY, value, '2020-01-01') AS dt
+FROM GENERATE_SERIES(0, DATEDIFF(DAY, '2020-01-01', '2030-12-31'));
+
 drop table GlobalSuperStore.DimCustomer
 create table GlobalSuperStore.DimCustomer as 
 select ROW_NUMBER() over ( order by CustomerName asc) as CusKey,*,1 as is_active
