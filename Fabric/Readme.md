@@ -100,18 +100,15 @@ prd.ProductKey
 ,ctry.countryKey
 ,cust.CusKey
 ,o.OrderID
-,o.OrderDate
-,o.ShipDate
 ,o.Sales
 ,o.Quantity
-,o.Discount
 ,o.Profit
-,o.ShippingCost
-,o.OrderPriority
+,dd.SkeyDate
 from Lakehouse_3_11.GlobalSuperStore.[order] o
 left outer join GlobalSuperStore.DimCustomer cust on o.CustomerID=cust.CustomerID 
 left outer join GlobalSuperStore.DimCountry ctry on o.[State]=ctry.[State] and o.[Country]=ctry.[Country] and o.Market=ctry.Market and o.Region=ctry.Region 
 left outer join GlobalSuperStore.DimProduct prd on prd.[ProductID] = o.[ProductID] and  prd.[ProductName] = o.[ProductName]
+ left join DimDate as dd on dd.dt = format( o.OrderDate , 'yyyy-MM-dd')
 ```
 
 ### Activity2 : Create PBI Dashboard
