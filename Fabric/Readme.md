@@ -64,9 +64,12 @@ select *,@max_skey+row_number() over ...
 ``` 
 CREATE SCHEMA GlobalSuperStore;
 
-create table GlobalSuperStore.DimDate as 
-SELECT DATEADD(DAY, value, '2020-01-01') AS dt
-FROM GENERATE_SERIES(0, DATEDIFF(DAY, '2020-01-01', '2030-12-31'));
+drop table if EXISTS DimDate ; 
+create table DimDate as 
+select cast( format(dt,'yyyyMMdd') as Int) as SkeyDate ,* , 1 is_Active from (
+select 
+dateadd(day , value , cast('2016-01-01' as date)) as dt
+FROM GENERATE_SERIES(0, DATEDIFF(DAY, '2016-01-01', '2021-12-31')); --from generate_series(0,2000,1)) T
 
 drop table GlobalSuperStore.DimCustomer
 create table GlobalSuperStore.DimCustomer as 
