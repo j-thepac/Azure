@@ -657,7 +657,7 @@ What cannot be checked in
     - Edit : Preview
     - Live : Ingest Date
 4. Source >http > https://konkan-railway-api.vercel.app/api/v4/fetchTrains
-5. Real TIme Dashoboard using Maps with Latitude and Longitude
+5. Real Time Dashoboard using Maps with Latitude and Longitude
 6. Windows: Eg Train location every minute .To find Avg Speed Eg : 10:00  10:01  10:02  10:03 ..
 - Tumbling = Fixed, no overlap Eg : |---- 10:00to10:05  ----|------ 10:05to10:10  ------|
 - Hopping = Fixed duration, fixed hop interval.Eg :  10:00 to 10:05 ,  10:02 to 10:07 .. 
@@ -667,6 +667,9 @@ New event at 10:06 → Calculate 10:01–10:06
 7. Max message Size = 1MB
 8. OPTIMIZE: Compacts small Delta files into larger files to improve read performance.
 9. VACUUM: Deletes obsolete Delta data files to reclaim storage space.
+10. Verify KQL Query in KQL editor once look fine
+  - Dashboard
+  - 
 ### KQL : Kusto Query Language
 1. | symbol passes the result of one operation to the next, forming a query pipeline.
 2. Case Sensitive
@@ -745,3 +748,48 @@ New_Bike
    - Add Transform > Expand (explode rows) > Manage Fields(col  transformation) >GroupBY >Destination (EventHOuse)
 SAP , Catalog  , etc., 
    - To make 
+
+## Activity :
+1. Basic Bike Sampel DataSet : EventStream > Eventhouse
+2. Validate Records in KQL
+```
+myBike
+| extend IsValid =
+    isnotempty(BikepointID)
+    and isnotnull(Latitude) and Latitude between (-90 .. 90)
+    and isnotnull(Longitude) and Longitude between (-180 .. 180)
+    and No_Bikes >= 0
+    and No_Empty_Docks >= 0
+| summarize
+    TotalRecords = count(),
+    ValidRecords = countif(IsValid),
+    InvalidRecords = countif(not(IsValid))
+| extend QualityPercentage =
+    round(100.0 * ValidRecords / TotalRecords, 2)
+```
+
+3. Create Dashboard with Following KPI .
+   - TotalStations
+   - TotalBikes
+   - EmptyDocks
+   - ZeroBikeStations
+   - FullStations
+   - LowAvailability
+```
+myBike
+| summarize arg_max(ingestion_time(), *) by BikepointID
+| summarize
+    TotalStations = count(),
+    TotalBikes = sum(No_Bikes),
+    EmptyDocks = sum(No_Empty_Docks),
+    ZeroBikeStations = countif(No_Bikes == 0),
+    FullStations = countif(No_Empty_Docks == 0),
+    LowAvailability = countif(No_Bikes <= 2)
+```
+4. Create a Bar Gaph:  Bikes vs Neighbourhood
+```
+myBike
+| summarize arg_max(ingestion_time(), *) by BikepointID
+| summarize TotalBikes = sum(No_Bikes) by Neighbourhood
+| order by TotalBikes desc
+```
