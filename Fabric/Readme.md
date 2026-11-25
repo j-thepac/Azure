@@ -793,3 +793,11 @@ myBike
 | summarize TotalBikes = sum(No_Bikes) by Neighbourhood
 | order by TotalBikes desc
 ```
+5. Line Chart for real time changes of Bikes availablity
+```
+myBike
+| summarize arg_max(ingestion_time(), No_Bikes) 
+    by BikepointID, Time = bin(ingestion_time(), 1m)
+| summarize TotalBikes = sum(No_Bikes) by Time
+| order by Time asc
+```
