@@ -674,7 +674,8 @@ New event at 10:06 → Calculate 10:01–10:06
 1. | symbol passes the result of one operation to the next, forming a query pipeline.
 2. Case Sensitive
 3. Sort default desc
-4. Optimization KQL :
+4. Kusto Charts and Python notebook charts . Both are primarily for data exploration and analysis
+5. Optimization KQL :
    - filter first eg :```t
      					|where Name has "azure"```
    - use less columns
@@ -754,6 +755,12 @@ SAP , Catalog  , etc.,
 2. Validate Records in KQL
 ```
 myBike
+| count
+
+myBike
+| take 100
+
+myBike
 | extend IsValid =
     isnotempty(BikepointID)
     and isnotnull(Latitude) and Latitude between (-90 .. 90)
@@ -800,4 +807,8 @@ myBike
     by BikepointID, Time = bin(ingestion_time(), 1m)
 | summarize TotalBikes = sum(No_Bikes) by Time
 | order by Time asc
+
+my_table
+| summarize TotalBikes = sum(No_Bikes) by IngestionTime = bin(ingestion_time(), 5s)
+| order by IngestionTime asc
 ```
